@@ -31,5 +31,6 @@ pub struct ToastData {
 
 	pub level: ToastLevel,
 	pub expiry: u32,
+	pub progress: bool,
 	pub position: ToastPosition,
 }

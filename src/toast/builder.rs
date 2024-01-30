@@ -17,6 +17,7 @@ pub struct ToastBuilder {
 
 	level: ToastLevel,
 	expiry: u32,
+	progress: bool,
 	position: ToastPosition,
 }
 
@@ -26,6 +27,7 @@ pub struct ToastBuilder {
 /// The defaults are:
 /// * `level`: `ToastLevel::Info`
 /// * `expiry`: `2500ms`
+/// * `progress`: false
 /// * `position`: ToastPosition::BottomLeft
 ///
 /// # Examples
@@ -44,11 +46,12 @@ impl ToastBuilder {
 
 			level: ToastLevel::Info,
 			expiry: 2_500,
+			progress: true,
 			position: ToastPosition::BottomLeft,
 		}
 	}
 
-	/// Sets the level of the toast in milliseconds.
+	/// Sets the level of the toast.
 	///
 	/// # Examples
 	/// ToastBuilder::new("My toast message.")
@@ -63,12 +66,22 @@ impl ToastBuilder {
 	/// # Examples
 	/// ToastBuilder::new("My toast message.")
 	///     .with_expiry(1_500); // sets the expiry time to `1500ms`.
+	pub fn with_progress(mut self, progress: bool) -> Self {
+		self.progress = progress;
+		self
+	}
+
+	/// Sets the progress flag of the toast to show or hide the progress bar.
+	///
+	/// # Examples
+	/// ToastBuilder::new("My toast message.")
+	///     .with_expiry(1_500); // sets the expiry time to `1500ms`.
 	pub fn with_expiry(mut self, expiry: u32) -> Self {
 		self.expiry = expiry;
 		self
 	}
 
-	/// Sets the position of the toast in milliseconds.
+	/// Sets the position of the toast.
 	///
 	/// # Examples
 	/// ToastBuilder::new("My toast message.")
@@ -86,6 +99,7 @@ impl ToastBuilder {
 
 			level: self.level,
 			expiry: self.expiry,
+			progress: self.progress,
 			position: self.position,
 		}
 	}

@@ -79,18 +79,22 @@ pub fn Toast(toast: ToastData) -> impl IntoView {
 				{toast.message}
 			</span>
 
-			<div
-				style:height="4px"
-				style:width="100%"
-				style:background-color=text_color
-				style:position="absolute"
-				style:bottom="0"
-				style:left="0"
-				style:animation-name="leptoast-progress"
-				style:animation-duration=format!("{}ms", toast.expiry)
-				style:animation-timing-function="linear"
-				style:animation-fill-mode="forwards"
-			/>
+			<Show
+				when=move || { toast.progress }
+			>
+				<div
+					style:height="4px"
+					style:width="100%"
+					style:background-color=text_color
+					style:position="absolute"
+					style:bottom="0"
+					style:left="0"
+					style:animation-name="leptoast-progress"
+					style:animation-duration=format!("{}ms", toast.expiry)
+					style:animation-timing-function="linear"
+					style:animation-fill-mode="forwards"
+				/>
+			</Show>
 		</div>
 	}
 }
