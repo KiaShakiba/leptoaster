@@ -58,7 +58,7 @@ pub fn Toast(toast: ToastData) -> impl IntoView {
 			style:background-color=background_color
 			style:border="1px solid"
 			style:border-color=border_color
-			style:border-radius="8px"
+			style:position="relative"
 			style:cursor="pointer"
 			style:box-sizing="border-box"
 			on:click=move |_| {
@@ -78,6 +78,19 @@ pub fn Toast(toast: ToastData) -> impl IntoView {
 			>
 				{toast.message}
 			</span>
+
+			<div
+				style:height="4px"
+				style:width="100%"
+				style:background-color=text_color
+				style:position="absolute"
+				style:bottom="0"
+				style:left="0"
+				style:animation-name="leptoast-progress"
+				style:animation-duration=format!("{}ms", toast.expiry)
+				style:animation-timing-function="linear"
+				style:animation-fill-mode="forwards"
+			/>
 		</div>
 	}
 }

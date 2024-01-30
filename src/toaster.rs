@@ -32,6 +32,13 @@ pub fn Toaster() -> impl IntoView {
 		.expect("Could not use toaster context.");
 
 	view! {
+		<style>
+			"@keyframes leptoast-progress {
+				from { width: 100%; }
+				to { width: 0; }
+			}"
+		</style>
+
 		<div
 			style:position="fixed"
 			style:top="0"
