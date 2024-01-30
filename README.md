@@ -1,4 +1,4 @@
-# leptoast
+# Leptoast
 
 Leptoast is a minimal toast library for Leptos. It provides a simple interface to show toast messages to the user.
 
