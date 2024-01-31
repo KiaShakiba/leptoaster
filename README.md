@@ -51,7 +51,7 @@ For more customization, use the `toast` function along with the `ToastBuilder`:
 toaster.toast(
     ToastBuilder::new("My toast message goes here.")
         .with_level(ToastLevel::Success) // set the toast level (default is `ToastLevel::Info`)
-        .with_expiry(3_000) // expiry in milliseconds (default is `2500`)
+        .with_expiry(Some(3_000)) // expiry in milliseconds (default is `2500`)
         .with_progress(false) // enable or disable the progress bar (default is `true`)
         .with_position(ToastPosition::TopRight) // set the toast position (default is 'ToastPosition::BottomLeft`)
 );
