@@ -16,7 +16,7 @@ pub struct ToastBuilder {
 	message: String,
 
 	level: ToastLevel,
-	expiry: u32,
+	expiry: Option<u32>,
 	progress: bool,
 	position: ToastPosition,
 }
@@ -31,8 +31,13 @@ pub struct ToastBuilder {
 /// * `position`: ToastPosition::BottomLeft
 ///
 /// # Examples
+/// ```
 /// ToastBuilder::new("My toast message.")
-///     .with_expiry(1_500);
+///     .with_level(ToastLevel::Success)
+///     .with_expiry(1_500)
+///     .with_progress(true)
+///     .with_position(ToastPosition::BottomLeft);
+/// ```
 impl ToastBuilder {
 	/// Constructs a new toast builder with the supplied message.
 	///
@@ -45,7 +50,7 @@ impl ToastBuilder {
 			message: message.into(),
 
 			level: ToastLevel::Info,
-			expiry: 2_500,
+			expiry: Some(2_500),
 			progress: true,
 			position: ToastPosition::BottomLeft,
 		}
@@ -54,29 +59,35 @@ impl ToastBuilder {
 	/// Sets the level of the toast.
 	///
 	/// # Examples
+	/// ```
 	/// ToastBuilder::new("My toast message.")
 	///     .with_level(ToastLevel::Warn); // sets the level to `warn`.
+	/// ```
 	pub fn with_level(mut self, level: ToastLevel) -> Self {
 		self.level = level;
-		self
-	}
-
-	/// Sets the expiry time of the toast in milliseconds.
-	///
-	/// # Examples
-	/// ToastBuilder::new("My toast message.")
-	///     .with_expiry(1_500); // sets the expiry time to `1500ms`.
-	pub fn with_progress(mut self, progress: bool) -> Self {
-		self.progress = progress;
 		self
 	}
 
 	/// Sets the progress flag of the toast to show or hide the progress bar.
 	///
 	/// # Examples
+	/// ```
 	/// ToastBuilder::new("My toast message.")
 	///     .with_expiry(1_500); // sets the expiry time to `1500ms`.
-	pub fn with_expiry(mut self, expiry: u32) -> Self {
+	/// ```
+	pub fn with_progress(mut self, progress: bool) -> Self {
+		self.progress = progress;
+		self
+	}
+
+	/// Sets the expiry time of the toast in milliseconds, or disabled it on `None`.
+	///
+	/// # Examples
+	/// ```
+	/// ToastBuilder::new("My toast message.")
+	///     .with_expiry(Some(1_500)); // sets the expiry time to `1500ms`.
+	/// ```
+	pub fn with_expiry(mut self, expiry: Option<u32>) -> Self {
 		self.expiry = expiry;
 		self
 	}
@@ -84,8 +95,10 @@ impl ToastBuilder {
 	/// Sets the position of the toast.
 	///
 	/// # Examples
+	/// ```
 	/// ToastBuilder::new("My toast message.")
 	///     .with_position(ToastPosition::TopRight); // sets the position to the top right.
+	/// ```
 	pub fn with_position(mut self, position: ToastPosition) -> Self {
 		self.position = position;
 		self

@@ -48,7 +48,11 @@ pub fn Toast(toast: ToastData) -> impl IntoView {
 	};
 
 	create_resource(|| (), move |_| async move {
-		TimeoutFuture::new(toast.expiry).await;
+		let Some(expiry) = toast.expiry else {
+			return;
+		};
+
+		TimeoutFuture::new(expiry).await;
 		set_animation_name("leptoaster-slide-out");
 		TimeoutFuture::new(250).await;
 		expect_toaster().remove(toast.id);
@@ -93,7 +97,7 @@ pub fn Toast(toast: ToastData) -> impl IntoView {
 			</span>
 
 			<Show
-				when=move || { toast.progress }
+				when=move || { toast.expiry.is_some() && toast.progress }
 			>
 				<div
 					style:height="4px"
@@ -103,7 +107,7 @@ pub fn Toast(toast: ToastData) -> impl IntoView {
 					style:bottom="0"
 					style:left="0"
 					style:animation-name="leptoaster-progress"
-					style:animation-duration=format!("{}ms", toast.expiry)
+					style:animation-duration=format!("{}ms", toast.expiry.unwrap())
 					style:animation-timing-function="linear"
 					style:animation-fill-mode="forwards"
 				/>
