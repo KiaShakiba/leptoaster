@@ -1,18 +1,18 @@
-# Leptoast
+# Leptoaster
 
-Leptoast is a minimal toast library for Leptos. It provides a simple interface to show toast messages to the user.
+Leptoaster is a minimal toast library for Leptos. It provides a simple interface to show toast messages to the user.
 
 ## Getting started
 
-Assuming you already have Leptos installed, install Leptoast
+Assuming you already have Leptos installed, install Leptoaster
 ```
-cargo add leptoast
+cargo add leptoaster
 ```
 
 Once, installed, provide the toaster in the root component of your application and add the `Toaster` component.
 ```
 use leptos::*;
-use leptoast::*;
+use leptoaster::*;
 
 #[component]
 fn App() -> IntoView {
@@ -28,7 +28,7 @@ fn App() -> IntoView {
 To create a toast message in any component, simple use `expect_toaster()`.
 ```
 use lepto::*;
-use leptoast::*;
+use leptoaster::*;
 
 #[component]
 fn MyComponent() -> IntoView {
