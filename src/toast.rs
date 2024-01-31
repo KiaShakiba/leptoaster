@@ -43,7 +43,7 @@ pub fn Toast(toast: ToastData) -> impl IntoView {
 
 	create_resource(|| (), move |_| async move {
 		TimeoutFuture::new(toast.expiry).await;
-		expect_toaster().remove(toast.id);
+		//expect_toaster().remove(toast.id);
 	});
 
 	view! {
@@ -60,6 +60,11 @@ pub fn Toast(toast: ToastData) -> impl IntoView {
 			style:cursor="pointer"
 			style:overflow="hidden"
 			style:box-sizing="border-box"
+			style:left="-344px"
+			style:animation-name="leptoast-slide-in"
+			style:animation-duration="250ms"
+			style:animation-timing-function="linear"
+			style:animation-fill-mode="forwards"
 			on:click=move |_| expect_toaster().remove(toast.id)
 		>
 			<span

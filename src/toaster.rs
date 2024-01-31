@@ -31,10 +31,22 @@ pub fn Toaster() -> impl IntoView {
 
 	view! {
 		<style>
-			"@keyframes leptoast-progress {
+			"
+			@keyframes leptoast-slide-in {
+				from { left: -344px }
+				to { left: 0 }
+			}
+
+			@keyframes leptoast-slide-out {
+				from { left: 0 }
+				to { left: -344px }
+			}
+
+			@keyframes leptoast-progress {
 				from { width: 100%; }
 				to { width: 0; }
-			}"
+			}
+			"
 		</style>
 
 		<div
