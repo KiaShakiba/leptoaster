@@ -8,7 +8,6 @@
 pub mod context;
 
 use leptos::*;
-
 use crate::toaster::context::ToasterContext;
 use crate::toast::Toast;
 
@@ -28,8 +27,7 @@ use crate::toast::Toast;
 /// ```
 #[component]
 pub fn Toaster() -> impl IntoView {
-	let toaster = use_context::<ToasterContext>()
-		.expect("Could not use toaster context.");
+	let toaster = expect_toaster();
 
 	view! {
 		<style>
@@ -99,4 +97,14 @@ pub fn Toaster() -> impl IntoView {
 			</For>
 		</div>
 	}
+}
+
+pub fn provide_toaster() {
+	if use_context::<ToasterContext>().is_none() {
+		provide_context(ToasterContext::default());
+	}
+}
+
+pub fn expect_toaster() -> ToasterContext {
+	expect_context::<ToasterContext>()
 }

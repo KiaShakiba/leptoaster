@@ -10,7 +10,7 @@ mod builder;
 
 use leptos::*;
 use gloo_timers::future::TimeoutFuture;
-use crate::ToasterContext;
+use crate::toaster::expect_toaster;
 
 pub use crate::toast::data::{
 	ToastData,
@@ -42,11 +42,8 @@ pub fn Toast(toast: ToastData) -> impl IntoView {
 	};
 
 	create_resource(|| (), move |_| async move {
-		let toaster = use_context::<ToasterContext>()
-			.expect("Could not use toaster context.");
-
 		TimeoutFuture::new(toast.expiry).await;
-		toaster.remove(toast.id);
+		expect_toaster().remove(toast.id);
 	});
 
 	view! {
@@ -63,12 +60,7 @@ pub fn Toast(toast: ToastData) -> impl IntoView {
 			style:cursor="pointer"
 			style:overflow="hidden"
 			style:box-sizing="border-box"
-			on:click=move |_| {
-				let toaster = use_context::<ToasterContext>()
-					.expect("Could not use toaster context.");
-
-				toaster.remove(toast.id);
-			}
+			on:click=move |_| expect_toaster().remove(toast.id)
 		>
 			<span
 				style:color=text_color

@@ -9,31 +9,30 @@ Assuming you already have Leptos installed, install Leptoast
 cargo add leptoast
 ```
 
-Once, installed, provide `ToasterContext` in the root component of your application and add the `Toaster` component.
+Once, installed, provide the toaster in the root component of your application and add the `Toaster` component.
 ```
 use leptos::*;
 use leptoast::*;
 
 #[component]
 fn App() -> IntoView {
-    provide_context(ToasterContext::default());
+    provide_toaster();
 
     view! {
         <Toaster />
-        // your other components go here
+        // your other components
     }
 }
 ```
 
-To create a toast message in any component, simple use the `ToasterContext` and call `toast`.
+To create a toast message in any component, simple use `expect_toaster()` and call `toast`.
 ```
 use lepto::*;
 use leptoast::*;
 
 #[component]
 fn MyComponent() -> IntoView {
-    let toaster = use_context::<ToasterContext>()
-        .expect("Unable to use toaster context.");
+    let toaster = expect_toaster();
 
     toaster.success("A toast message should appear!");
 }
@@ -41,7 +40,7 @@ fn MyComponent() -> IntoView {
 
 That's it! You can now show toast messages in your UI!
 
-The `ToasterContext` exposes a number of different kinds of toasts:
+The `toaster` exposes a number of different kinds of toasts:
 * `info`
 * `success`
 * `warn`

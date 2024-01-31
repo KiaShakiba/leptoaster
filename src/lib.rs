@@ -11,7 +11,8 @@ mod toast;
 pub use crate::{
 	toaster::{
 		Toaster,
-		context::ToasterContext,
+		provide_toaster,
+		expect_toaster,
 	},
 
 	toast::{

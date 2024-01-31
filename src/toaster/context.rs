@@ -50,8 +50,7 @@ impl ToasterContext {
 	/// ```
 	/// #[component]
 	/// fn Component() -> impl IntoView {
-	///     let toaster = use_context::<ToasterContext>
-	///         .expect("Could not use toaster context.");
+	///     let toaster = expect_context::<ToasterContext>();
 	///
 	///     toaster.toast(
 	///         ToastBuilder::new("My toast message.")
@@ -100,9 +99,7 @@ impl ToasterContext {
 	/// ```
 	/// #[component]
 	/// fn Component() -> impl IntoView {
-	///     let toaster = use_context::<ToasterContext>
-	///         .expect("Could not use toaster context.");
-	///
+	///     let toaster = expect_context::<ToasterContext>();
 	///     toaster.info("My toast message.");
 	/// }
 	/// ```
@@ -120,9 +117,7 @@ impl ToasterContext {
 	/// ```
 	/// #[component]
 	/// fn Component() -> impl IntoView {
-	///     let toaster = use_context::<ToasterContext>
-	///         .expect("Could not use toaster context.");
-	///
+	///     let toaster = expect_context::<ToasterContext>();
 	///     toaster.success("My toast message.");
 	/// }
 	/// ```
@@ -140,9 +135,7 @@ impl ToasterContext {
 	/// ```
 	/// #[component]
 	/// fn Component() -> impl IntoView {
-	///     let toaster = use_context::<ToasterContext>
-	///         .expect("Could not use toaster context.");
-	///
+	///     let toaster = expect_context::<ToasterContext>();
 	///     toaster.warn("My toast message.");
 	/// }
 	/// ```
@@ -160,9 +153,7 @@ impl ToasterContext {
 	/// ```
 	/// #[component]
 	/// fn Component() -> impl IntoView {
-	///     let toaster = use_context::<ToasterContext>
-	///         .expect("Could not use toaster context.");
-	///
+	///     let toaster = expect_context::<ToasterContext>();
 	///     toaster.error("My toast message.");
 	/// }
 	/// ```
