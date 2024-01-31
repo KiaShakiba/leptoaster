@@ -26,7 +26,21 @@ pub use crate::toast::data::{
 /// A toast element with the supplied alert style.
 #[component]
 pub fn Toast(toast: ToastData) -> impl IntoView {
-	let (animation_name, set_animation_name) = create_signal("leptoaster-slide-in");
+	let slide_in_animation_name = match toast.position {
+		ToastPosition::TopLeft => "leptoaster-slide-in-left",
+		ToastPosition::TopRight => "leptoaster-slide-in-right",
+		ToastPosition::BottomRight => "leptoaster-slide-in-right",
+		ToastPosition::BottomLeft => "leptoaster-slide-in-left",
+	};
+
+	let slide_out_animation_name = match toast.position {
+		ToastPosition::TopLeft => "leptoaster-slide-out-left",
+		ToastPosition::TopRight => "leptoaster-slide-out-right",
+		ToastPosition::BottomRight => "leptoaster-slide-out-right",
+		ToastPosition::BottomLeft => "leptoaster-slide-out-left",
+	};
+
+	let (animation_name, set_animation_name) = create_signal(slide_in_animation_name);
 
 	let background_color = match toast.level {
 		ToastLevel::Info => "#f5f5f5",
@@ -47,13 +61,20 @@ pub fn Toast(toast: ToastData) -> impl IntoView {
 		_ => "#ffffff",
 	};
 
+	let (initial_left, initial_right) = match toast.position {
+		ToastPosition::TopLeft => ("-344px", "auto"),
+		ToastPosition::TopRight => ("auto", "-344px"),
+		ToastPosition::BottomRight => ("auto", "-344px"),
+		ToastPosition::BottomLeft => ("-344px", "auto"),
+	};
+
 	create_resource(|| (), move |_| async move {
 		let Some(expiry) = toast.expiry else {
 			return;
 		};
 
 		TimeoutFuture::new(expiry).await;
-		set_animation_name("leptoaster-slide-out");
+		set_animation_name(slide_out_animation_name);
 		TimeoutFuture::new(250).await;
 		expect_toaster().remove(toast.id);
 	});
@@ -72,13 +93,14 @@ pub fn Toast(toast: ToastData) -> impl IntoView {
 			style:cursor="pointer"
 			style:overflow="hidden"
 			style:box-sizing="border-box"
-			style:left="-344px"
+			style:left=initial_left
+			style:right=initial_right
 			style:animation-name=animation_name
 			style:animation-duration="250ms"
 			style:animation-timing-function="linear"
 			style:animation-fill-mode="forwards"
 			on:click=move |_| {
-				set_animation_name("leptoaster-slide-out");
+				set_animation_name(slide_out_animation_name);
 
 				Timeout::new(250, move || {
 					expect_toaster().remove(toast.id)
