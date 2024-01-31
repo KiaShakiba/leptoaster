@@ -25,7 +25,7 @@ fn App() -> IntoView {
 }
 ```
 
-To create a toast message in any component, simple use `expect_toaster()` and call `toast`.
+To create a toast message in any component, simple use `expect_toaster()`.
 ```
 use lepto::*;
 use leptoast::*;
