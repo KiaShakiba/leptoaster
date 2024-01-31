@@ -22,6 +22,8 @@ pub use crate::toast::data::{
 /// A toast element with the supplied alert style.
 #[component]
 pub fn Toast(toast: ToastData) -> impl IntoView {
+	let (animation_name, set_animation_name) = create_signal("leptoaster-slide-in");
+
 	let background_color = match toast.level {
 		ToastLevel::Info => "#f5f5f5",
 		ToastLevel::Success => "#4caf50",
@@ -43,7 +45,9 @@ pub fn Toast(toast: ToastData) -> impl IntoView {
 
 	create_resource(|| (), move |_| async move {
 		TimeoutFuture::new(toast.expiry).await;
-		//expect_toaster().remove(toast.id);
+		set_animation_name("leptoaster-slide-out");
+		TimeoutFuture::new(250).await;
+		expect_toaster().remove(toast.id);
 	});
 
 	view! {
@@ -61,7 +65,7 @@ pub fn Toast(toast: ToastData) -> impl IntoView {
 			style:overflow="hidden"
 			style:box-sizing="border-box"
 			style:left="-344px"
-			style:animation-name="leptoast-slide-in"
+			style:animation-name=animation_name
 			style:animation-duration="250ms"
 			style:animation-timing-function="linear"
 			style:animation-fill-mode="forwards"
@@ -88,7 +92,7 @@ pub fn Toast(toast: ToastData) -> impl IntoView {
 					style:position="absolute"
 					style:bottom="0"
 					style:left="0"
-					style:animation-name="leptoast-progress"
+					style:animation-name="leptoaster-progress"
 					style:animation-duration=format!("{}ms", toast.expiry)
 					style:animation-timing-function="linear"
 					style:animation-fill-mode="forwards"

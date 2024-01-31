@@ -16,7 +16,7 @@ use crate::toast::Toast;
 /// # Examples
 /// ```
 /// use leptos::*;
-/// use leptoast::*;
+/// use leptoaster::*;
 ///
 /// #[component]
 /// fn App() -> impl IntoView {
@@ -32,17 +32,17 @@ pub fn Toaster() -> impl IntoView {
 	view! {
 		<style>
 			"
-			@keyframes leptoast-slide-in {
+			@keyframes leptoaster-slide-in {
 				from { left: -344px }
 				to { left: 0 }
 			}
 
-			@keyframes leptoast-slide-out {
+			@keyframes leptoaster-slide-out {
 				from { left: 0 }
 				to { left: -344px }
 			}
 
-			@keyframes leptoast-progress {
+			@keyframes leptoaster-progress {
 				from { width: 100%; }
 				to { width: 0; }
 			}
