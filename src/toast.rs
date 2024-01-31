@@ -9,7 +9,11 @@ mod data;
 mod builder;
 
 use leptos::*;
-use gloo_timers::future::TimeoutFuture;
+use gloo_timers::{
+	future::TimeoutFuture,
+	callback::Timeout,
+};
+
 use crate::toaster::expect_toaster;
 
 pub use crate::toast::data::{
@@ -69,7 +73,13 @@ pub fn Toast(toast: ToastData) -> impl IntoView {
 			style:animation-duration="250ms"
 			style:animation-timing-function="linear"
 			style:animation-fill-mode="forwards"
-			on:click=move |_| expect_toaster().remove(toast.id)
+			on:click=move |_| {
+				set_animation_name("leptoaster-slide-out");
+
+				Timeout::new(250, move || {
+					expect_toaster().remove(toast.id)
+				}).forget();
+			}
 		>
 			<span
 				style:color=text_color
