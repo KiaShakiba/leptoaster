@@ -26,6 +26,8 @@ pub use crate::toast::data::{
 /// A toast element with the supplied alert style.
 #[component]
 pub fn Toast(toast: ToastData) -> impl IntoView {
+	let animation_duration = 200;
+
 	let slide_in_animation_name = match toast.position {
 		ToastPosition::TopLeft | ToastPosition::BottomLeft => "leptoaster-slide-in-left",
 		ToastPosition::TopRight | ToastPosition::BottomRight => "leptoaster-slide-in-right",
@@ -39,7 +41,7 @@ pub fn Toast(toast: ToastData) -> impl IntoView {
 	let (animation_name, set_animation_name) = create_signal(slide_in_animation_name);
 
 	let (background_color, border_color) = match toast.level {
-		ToastLevel::Info => ("#f5f5f5", "#222222"),
+		ToastLevel::Info => ("#ffffff", "#222222"),
 		ToastLevel::Success => ("#4caf50", "#2e7d32"),
 		ToastLevel::Warn => ("#ff9800", "#ff8f00"),
 		ToastLevel::Error => ("#f44336", "#c62828"),
@@ -62,7 +64,7 @@ pub fn Toast(toast: ToastData) -> impl IntoView {
 
 		TimeoutFuture::new(expiry).await;
 		set_animation_name(slide_out_animation_name);
-		TimeoutFuture::new(250).await;
+		TimeoutFuture::new(animation_duration).await;
 		expect_toaster().remove(toast.id);
 	});
 
@@ -82,14 +84,15 @@ pub fn Toast(toast: ToastData) -> impl IntoView {
 			style:box-sizing="border-box"
 			style:left=initial_left
 			style:right=initial_right
+			style:display="flex"
 			style:animation-name=animation_name
-			style:animation-duration="250ms"
+			style:animation-duration=format!("{}ms", animation_duration)
 			style:animation-timing-function="linear"
 			style:animation-fill-mode="forwards"
 			on:click=move |_| {
 				set_animation_name(slide_out_animation_name);
 
-				Timeout::new(250, move || {
+				Timeout::new(animation_duration, move || {
 					expect_toaster().remove(toast.id);
 				}).forget();
 			}
@@ -101,6 +104,9 @@ pub fn Toast(toast: ToastData) -> impl IntoView {
 				style:font-family="Arial"
 				style:font-weight="600"
 				style:display="inline-block"
+				style:max-width="100%"
+				style:text-overflow="ellipsis"
+				style:overflow="hidden"
 			>
 				{toast.message}
 			</span>

@@ -7,7 +7,7 @@
 
 pub type ToastId = u64;
 
-#[derive(Clone, Debug)]
+#[derive(Clone, PartialEq, Eq, Debug)]
 pub enum ToastLevel {
 	Info,
 	Success,
@@ -15,7 +15,7 @@ pub enum ToastLevel {
 	Error,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Clone, PartialEq, Eq, Debug)]
 pub enum ToastPosition {
 	TopLeft,
 	TopRight,
