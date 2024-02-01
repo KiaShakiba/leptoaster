@@ -27,8 +27,8 @@ pub struct ToastBuilder {
 /// The defaults are:
 /// * `level`: `ToastLevel::Info`
 /// * `expiry`: `2500ms`
-/// * `progress`: false
-/// * `position`: ToastPosition::BottomLeft
+/// * `progress`: `false`
+/// * `position`: `ToastPosition::BottomLeft`
 ///
 /// # Examples
 /// ```
@@ -45,6 +45,7 @@ impl ToastBuilder {
 	/// ```
 	/// let toast = ToastBuilder::new("My toast message.");
 	/// ```
+	#[must_use]
 	pub fn new(message: &str) -> Self {
 		ToastBuilder {
 			message: message.into(),
@@ -63,6 +64,7 @@ impl ToastBuilder {
 	/// ToastBuilder::new("My toast message.")
 	///     .with_level(ToastLevel::Warn); // sets the level to `warn`.
 	/// ```
+	#[must_use]
 	pub fn with_level(mut self, level: ToastLevel) -> Self {
 		self.level = level;
 		self
@@ -75,6 +77,7 @@ impl ToastBuilder {
 	/// ToastBuilder::new("My toast message.")
 	///     .with_expiry(1_500); // sets the expiry time to `1500ms`.
 	/// ```
+	#[must_use]
 	pub fn with_progress(mut self, progress: bool) -> Self {
 		self.progress = progress;
 		self
@@ -87,6 +90,7 @@ impl ToastBuilder {
 	/// ToastBuilder::new("My toast message.")
 	///     .with_expiry(Some(1_500)); // sets the expiry time to `1500ms`.
 	/// ```
+	#[must_use]
 	pub fn with_expiry(mut self, expiry: Option<u32>) -> Self {
 		self.expiry = expiry;
 		self
@@ -99,12 +103,14 @@ impl ToastBuilder {
 	/// ToastBuilder::new("My toast message.")
 	///     .with_position(ToastPosition::TopRight); // sets the position to the top right.
 	/// ```
+	#[must_use]
 	pub fn with_position(mut self, position: ToastPosition) -> Self {
 		self.position = position;
 		self
 	}
 
 	/// Builds the toast into a `ToastData` with the supplied ID.
+	#[must_use]
 	pub fn build(self, id: ToastId) -> ToastData {
 		ToastData {
 			id,

@@ -143,6 +143,7 @@ pub fn provide_toaster() {
 	}
 }
 
+#[must_use]
 pub fn expect_toaster() -> ToasterContext {
 	expect_context::<ToasterContext>()
 }

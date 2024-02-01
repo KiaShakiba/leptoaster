@@ -27,33 +27,22 @@ pub use crate::toast::data::{
 #[component]
 pub fn Toast(toast: ToastData) -> impl IntoView {
 	let slide_in_animation_name = match toast.position {
-		ToastPosition::TopLeft => "leptoaster-slide-in-left",
-		ToastPosition::TopRight => "leptoaster-slide-in-right",
-		ToastPosition::BottomRight => "leptoaster-slide-in-right",
-		ToastPosition::BottomLeft => "leptoaster-slide-in-left",
+		ToastPosition::TopLeft | ToastPosition::BottomLeft => "leptoaster-slide-in-left",
+		ToastPosition::TopRight | ToastPosition::BottomRight => "leptoaster-slide-in-right",
 	};
 
 	let slide_out_animation_name = match toast.position {
-		ToastPosition::TopLeft => "leptoaster-slide-out-left",
-		ToastPosition::TopRight => "leptoaster-slide-out-right",
-		ToastPosition::BottomRight => "leptoaster-slide-out-right",
-		ToastPosition::BottomLeft => "leptoaster-slide-out-left",
+		ToastPosition::TopLeft | ToastPosition::BottomLeft => "leptoaster-slide-out-left",
+		ToastPosition::TopRight | ToastPosition::BottomRight => "leptoaster-slide-out-right",
 	};
 
 	let (animation_name, set_animation_name) = create_signal(slide_in_animation_name);
 
-	let background_color = match toast.level {
-		ToastLevel::Info => "#f5f5f5",
-		ToastLevel::Success => "#4caf50",
-		ToastLevel::Warn => "#ff9800",
-		ToastLevel::Error => "#f44336",
-	};
-
-	let border_color = match toast.level {
-		ToastLevel::Info => "#222222",
-		ToastLevel::Success => "#2e7d32",
-		ToastLevel::Warn => "#ff8f00",
-		ToastLevel::Error => "#c62828",
+	let (background_color, border_color) = match toast.level {
+		ToastLevel::Info => ("#f5f5f5", "#222222"),
+		ToastLevel::Success => ("#4caf50", "#2e7d32"),
+		ToastLevel::Warn => ("#ff9800", "#ff8f00"),
+		ToastLevel::Error => ("#f44336", "#c62828"),
 	};
 
 	let text_color = match toast.level {
@@ -62,13 +51,11 @@ pub fn Toast(toast: ToastData) -> impl IntoView {
 	};
 
 	let (initial_left, initial_right) = match toast.position {
-		ToastPosition::TopLeft => ("-344px", "auto"),
-		ToastPosition::TopRight => ("auto", "-344px"),
-		ToastPosition::BottomRight => ("auto", "-344px"),
-		ToastPosition::BottomLeft => ("-344px", "auto"),
+		ToastPosition::TopLeft | ToastPosition::BottomLeft => ("-344px", "auto"),
+		ToastPosition::TopRight | ToastPosition::BottomRight => ("auto", "-344px"),
 	};
 
-	create_resource(|| (), move |_| async move {
+	create_resource(|| (), move |()| async move {
 		let Some(expiry) = toast.expiry else {
 			return;
 		};
@@ -103,7 +90,7 @@ pub fn Toast(toast: ToastData) -> impl IntoView {
 				set_animation_name(slide_out_animation_name);
 
 				Timeout::new(250, move || {
-					expect_toaster().remove(toast.id)
+					expect_toaster().remove(toast.id);
 				}).forget();
 			}
 		>
