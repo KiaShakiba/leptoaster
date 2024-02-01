@@ -77,7 +77,7 @@ pub fn Toast(toast: ToastData) -> impl IntoView {
 			style:background-color=background_color
 			style:border="1px solid"
 			style:border-color=border_color
-			style:border-radius="8px"
+			style:border-radius="4px"
 			style:position="relative"
 			style:cursor="pointer"
 			style:overflow="hidden"
