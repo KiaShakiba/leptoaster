@@ -9,6 +9,7 @@ mod data;
 mod builder;
 
 use leptos::*;
+
 use gloo_timers::{
 	future::TimeoutFuture,
 	callback::Timeout,
