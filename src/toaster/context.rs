@@ -13,7 +13,6 @@ use crate::toast::{
 	ToastData,
 	ToastId,
 	ToastLevel,
-	ToastPosition,
 };
 
 /// The global context of the toaster. You should provide this as a global context
@@ -30,11 +29,7 @@ use crate::toast::{
 #[derive(Clone, Debug)]
 pub struct ToasterContext {
 	stats: Arc<Mutex<ToasterStats>>,
-
-	pub top_left_queue: RwSignal<Vec<ToastData>>,
-	pub top_right_queue: RwSignal<Vec<ToastData>>,
-	pub bottom_right_queue: RwSignal<Vec<ToastData>>,
-	pub bottom_left_queue: RwSignal<Vec<ToastData>>,
+	pub queue: RwSignal<Vec<ToastData>>,
 }
 
 #[derive(Clone, Default, Debug)]
@@ -62,31 +57,9 @@ impl ToasterContext {
 		let mut stats = self.stats.lock().unwrap();
 		let toast = builder.build(stats.total + 1);
 
-		match toast.position {
-			ToastPosition::TopLeft => {
-				let mut queue = self.top_left_queue.get_untracked();
-				queue.push(toast);
-				self.top_left_queue.set(queue);
-			},
-
-			ToastPosition::TopRight => {
-				let mut queue = self.top_right_queue.get_untracked();
-				queue.push(toast);
-				self.top_right_queue.set(queue);
-			},
-
-			ToastPosition::BottomRight => {
-				let mut queue = self.bottom_right_queue.get_untracked();
-				queue.push(toast);
-				self.bottom_right_queue.set(queue);
-			},
-
-			ToastPosition::BottomLeft => {
-				let mut queue = self.bottom_left_queue.get_untracked();
-				queue.push(toast);
-				self.bottom_left_queue.set(queue);
-			},
-		}
+		let mut queue = self.queue.get_untracked();
+		queue.push(toast);
+		self.queue.set(queue);
 
 		stats.visible += 1;
 		stats.total += 1;
@@ -168,58 +141,16 @@ impl ToasterContext {
 	pub fn remove(&self, toast_id: ToastId) {
 		let mut stats = self.stats.lock().unwrap();
 
-		let top_left_index = self.top_left_queue
+		let index = self.queue
 			.get_untracked()
 			.iter().enumerate()
 			.find(|(_, toast)| toast.id == toast_id)
 			.map(|(index, _)| index);
 
-		let top_right_index = self.top_right_queue
-			.get_untracked()
-			.iter().enumerate()
-			.find(|(_, toast)| toast.id == toast_id)
-			.map(|(index, _)| index);
-
-		let bottom_right_index = self.bottom_right_queue
-			.get_untracked()
-			.iter().enumerate()
-			.find(|(_, toast)| toast.id == toast_id)
-			.map(|(index, _)| index);
-
-		let bottom_left_index = self.bottom_left_queue
-			.get_untracked()
-			.iter().enumerate()
-			.find(|(_, toast)| toast.id == toast_id)
-			.map(|(index, _)| index);
-
-		if let Some(index) = top_left_index {
-			let mut queue = self.top_left_queue.get_untracked();
+		if let Some(index) = index {
+			let mut queue = self.queue.get_untracked();
 			queue.remove(index);
-			self.top_left_queue.set(queue);
-
-			stats.visible -= 1;
-		}
-
-		if let Some(index) = top_right_index {
-			let mut queue = self.top_right_queue.get_untracked();
-			queue.remove(index);
-			self.top_right_queue.set(queue);
-
-			stats.visible -= 1;
-		}
-
-		if let Some(index) = bottom_right_index {
-			let mut queue = self.bottom_right_queue.get_untracked();
-			queue.remove(index);
-			self.bottom_right_queue.set(queue);
-
-			stats.visible -= 1;
-		}
-
-		if let Some(index) = bottom_left_index {
-			let mut queue = self.bottom_left_queue.get_untracked();
-			queue.remove(index);
-			self.bottom_left_queue.set(queue);
+			self.queue.set(queue);
 
 			stats.visible -= 1;
 		}
@@ -230,11 +161,7 @@ impl Default for ToasterContext {
 	fn default() -> Self {
 		ToasterContext {
 			stats: Arc::new(Mutex::new(ToasterStats::default())),
-
-			top_left_queue: create_rw_signal(Vec::new()),
-			top_right_queue: create_rw_signal(Vec::new()),
-			bottom_right_queue: create_rw_signal(Vec::new()),
-			bottom_left_queue: create_rw_signal(Vec::new()),
+			queue: create_rw_signal(Vec::new()),
 		}
 	}
 }

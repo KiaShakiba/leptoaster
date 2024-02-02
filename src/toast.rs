@@ -71,9 +71,8 @@ pub fn Toast(toast: ToastData) -> impl IntoView {
 
 	view! {
 		<div
-			style:width="320px"
-			style:max-width="80vw"
-			style:margin="12px"
+			style:width="100%"
+			style:margin="12px 0"
 			style:padding="16px"
 			style:background-color=background_color
 			style:border="1px solid"
