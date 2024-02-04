@@ -2,6 +2,10 @@
 
 Leptoaster is a minimal toast library for Leptos. It provides a simple interface to show toast messages to the user.
 
+## Demo
+
+Take a look at the demo [here](https://kiashakiba.github.io/leptoaster-demo)
+
 ## Getting started
 
 Assuming you already have Leptos installed, install Leptoaster
