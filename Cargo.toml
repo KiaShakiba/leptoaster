@@ -2,8 +2,10 @@
 name = "leptoaster"
 version = "0.1.0"
 edition = "2021"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+license = "MIT"
+description = "Toast messages for Leptos"
+repository = "https://github.com/KiaShakiba/leptoaster"
+readme = "README.md"
 
 [dependencies]
 gloo-timers = { version = "0.3.0", features = ["futures"] }
