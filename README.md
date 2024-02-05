@@ -4,7 +4,7 @@ Leptoaster is a minimal toast library for Leptos. It provides a simple interface
 
 ## Demo
 
-Take a look at the demo [here](https://kiashakiba.github.io/leptoaster-demo)
+Take a look at the demo [here](https://kiashakiba.github.io/leptoaster-demo).
 
 ## Getting started
 
@@ -59,4 +59,34 @@ toaster.toast(
         .with_progress(false) // enable or disable the progress bar (default is `true`)
         .with_position(ToastPosition::TopRight) // set the toast position (default is 'ToastPosition::BottomLeft`)
 );
+```
+
+## Styling
+
+To customize styling, override any of the following CSS variables:
+
+```
+--leptoaster-width
+--leptoaster-max-width
+
+--leptoaster-font-family
+--leptoaster-font-size
+--leptoaster-line-height
+--leptoaster-font-weight
+
+--leptoaster-info-background-color
+--leptoaster-info-border-color
+--leptoaster-info-text-color
+
+--leptoaster-success-background-color
+--leptoaster-success-border-color
+--leptoaster-success-text-color
+
+--leptoaster-warn-background-color
+--leptoaster-warn-border-color
+--leptoaster-warn-text-color
+
+--leptoaster-error-background-color
+--leptoaster-error-border-color
+--leptoaster-error-text-color
 ```
