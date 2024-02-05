@@ -6,6 +6,8 @@ license = "MIT"
 description = "Toast messages for Leptos"
 repository = "https://github.com/KiaShakiba/leptoaster"
 readme = "README.md"
+keywords = ["leptos", "toast", "web", "ui", "userinterface"]
+categories = ["gui", "web-programming"]
 
 [dependencies]
 gloo-timers = { version = "0.3.0", features = ["futures"] }
