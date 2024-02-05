@@ -39,24 +39,50 @@ pub fn Toaster() -> impl IntoView {
 	view! {
 		<style>
 			"
+			:root {
+				--leptoaster-width: 320px;
+				--leptoaster-max-width: 80vw;
+
+				--leptoaster-font-family: Arial;
+				--leptoaster-font-size: 14px;
+				--leptoaster-line-height: 20px;
+				--leptoaster-font-weight: 600;
+
+				--leptoaster-info-background-color: #ffffff;
+				--leptoaster-info-border-color: #222222;
+				--leptoaster-info-text-color: #222222;
+
+				--leptoaster-success-background-color: #4caf50;
+				--leptoaster-success-border-color: #2e7d32;
+				--leptoaster-success-text-color: #ffffff;
+
+				--leptoaster-warn-background-color: #ff9800;
+				--leptoaster-warn-border-color: #ff8f00;
+				--leptoaster-warn-text-color: #ffffff;
+
+				--leptoaster-error-background-color: #f44336;
+				--leptoaster-error-border-color: #c62828;
+				--leptoaster-error-text-color: #ffffff;
+			}
+
 			@keyframes leptoaster-slide-in-left {
-				from { left: -344px }
+				from { left: calc((var(--leptoaster-width) + 12px * 2) * -1) }
 				to { left: 0 }
 			}
 
 			@keyframes leptoaster-slide-out-left {
 				from { left: 0 }
-				to { left: -344px }
+				to { left: calc((var(--leptoaster-width) + 12px * 2) * -1) }
 			}
 
 			@keyframes leptoaster-slide-in-right {
-				from { right: -344px }
+				from { right: calc((var(--leptoaster-width) + 12px * 2) * -1) }
 				to { right: 0 }
 			}
 
 			@keyframes leptoaster-slide-out-right {
 				from { right: 0 }
-				to { right: -344px }
+				to { right: calc((var(--leptoaster-width) + 12px * 2) * -1) }
 			}
 
 			@keyframes leptoaster-progress {
@@ -75,8 +101,8 @@ pub fn Toaster() -> impl IntoView {
 				when=move || !is_container_empty(position)
 			>
 				<div
-					style:width="320px"
-					style:max-width="80vw"
+					style:width="var(--leptoaster-width)"
+					style:max-width="var(--leptoaster-max-width)"
 					style:margin=get_container_margin(position)
 					style:position="fixed"
 					style:inset=get_container_inset(position)

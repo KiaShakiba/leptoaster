@@ -29,34 +29,13 @@ pub use crate::toast::data::{
 pub fn Toast(toast: ToastData) -> impl IntoView {
 	let animation_duration = 200;
 
-	let slide_in_animation_name = match toast.position {
-		ToastPosition::TopLeft | ToastPosition::BottomLeft => "leptoaster-slide-in-left",
-		ToastPosition::TopRight | ToastPosition::BottomRight => "leptoaster-slide-in-right",
-	};
-
-	let slide_out_animation_name = match toast.position {
-		ToastPosition::TopLeft | ToastPosition::BottomLeft => "leptoaster-slide-out-left",
-		ToastPosition::TopRight | ToastPosition::BottomRight => "leptoaster-slide-out-right",
-	};
+	let slide_in_animation_name = get_slide_in_animation_name(&toast.position);
+	let slide_out_animation_name = get_slide_out_animation_name(&toast.position);
 
 	let (animation_name, set_animation_name) = create_signal(slide_in_animation_name);
 
-	let (background_color, border_color) = match toast.level {
-		ToastLevel::Info => ("#ffffff", "#222222"),
-		ToastLevel::Success => ("#4caf50", "#2e7d32"),
-		ToastLevel::Warn => ("#ff9800", "#ff8f00"),
-		ToastLevel::Error => ("#f44336", "#c62828"),
-	};
-
-	let text_color = match toast.level {
-		ToastLevel::Info => "#222222",
-		_ => "#ffffff",
-	};
-
-	let (initial_left, initial_right) = match toast.position {
-		ToastPosition::TopLeft | ToastPosition::BottomLeft => ("-344px", "auto"),
-		ToastPosition::TopRight | ToastPosition::BottomRight => ("auto", "-344px"),
-	};
+	let (background_color, border_color, text_color) = get_colors(&toast.level);
+	let (initial_left, initial_right) = get_initial_positions(&toast.position);
 
 	create_resource(|| (), move |()| async move {
 		let Some(expiry) = toast.expiry else {
@@ -99,10 +78,10 @@ pub fn Toast(toast: ToastData) -> impl IntoView {
 		>
 			<span
 				style:color=text_color
-				style:font-size="14px"
-				style:line-height="20px"
-				style:font-family="Arial"
-				style:font-weight="600"
+				style:font-size="var(--leptoaster-font-size)"
+				style:line-height="var(--leptoaster-line-height)"
+				style:font-family="var(--leptoaster-font-family)"
+				style:font-weight="var(--leptoaster-font-weight)"
 				style:display="inline-block"
 				style:max-width="100%"
 				style:text-overflow="ellipsis"
@@ -128,6 +107,55 @@ pub fn Toast(toast: ToastData) -> impl IntoView {
 				/>
 			</Show>
 		</div>
+	}
+}
+
+fn get_slide_in_animation_name(position: &ToastPosition) -> &'static str {
+	match position {
+		ToastPosition::TopLeft | ToastPosition::BottomLeft => "leptoaster-slide-in-left",
+		ToastPosition::TopRight | ToastPosition::BottomRight => "leptoaster-slide-in-right",
+	}
+}
+
+fn get_slide_out_animation_name(position: &ToastPosition) -> &'static str {
+	match position {
+		ToastPosition::TopLeft | ToastPosition::BottomLeft => "leptoaster-slide-out-left",
+		ToastPosition::TopRight | ToastPosition::BottomRight => "leptoaster-slide-out-right",
+	}
+}
+
+fn get_colors(level: &ToastLevel) -> (&'static str, &'static str, &'static str) {
+	match level {
+		ToastLevel::Info => (
+			"var(--leptoaster-info-background-color)",
+			"var(--leptoaster-info-border-color)",
+			"var(--leptoaster-info-text-color)",
+		),
+
+		ToastLevel::Success => (
+			"var(--leptoaster-success-background-color)",
+			"var(--leptoaster-success-border-color)",
+			"var(--leptoaster-success-text-color)",
+		),
+
+		ToastLevel::Warn => (
+			"var(--leptoaster-warn-background-color)",
+			"var(--leptoaster-warn-border-color)",
+			"var(--leptoaster-warn-text-color)",
+		),
+
+		ToastLevel::Error => (
+			"var(--leptoaster-error-background-color)",
+			"var(--leptoaster-error-border-color)",
+			"var(--leptoaster-error-text-color)",
+		),
+	}
+}
+
+fn get_initial_positions(position: &ToastPosition) -> (&'static str, &'static str) {
+	match position {
+		ToastPosition::TopLeft | ToastPosition::BottomLeft => ("calc((var(--leptoaster-width) + 12px * 2) * -1)", "auto"),
+		ToastPosition::TopRight | ToastPosition::BottomRight => ("auto", "calc((var(--leptoaster-width) + 12px * 2) * -1)"),
 	}
 }
 
