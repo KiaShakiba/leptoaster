@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-use std::sync::{Arc, Mutex};
+use std::cell::RefCell;
 use leptos::*;
 
 use crate::toast::{
@@ -28,7 +28,7 @@ use crate::toast::{
 ///  ```
 #[derive(Clone, Debug)]
 pub struct ToasterContext {
-	stats: Arc<Mutex<ToasterStats>>,
+	stats: RefCell<ToasterStats>,
 	pub queue: RwSignal<Vec<ToastData>>,
 }
 
@@ -54,15 +54,14 @@ impl ToasterContext {
 	/// }
 	/// ```
 	pub fn toast(&self, builder: ToastBuilder) {
-		let mut stats = self.stats.lock().unwrap();
-		let toast = builder.build(stats.total + 1);
+		let toast = builder.build(self.stats.borrow().total + 1);
 
 		let mut queue = self.queue.get_untracked();
 		queue.push(toast);
 		self.queue.set(queue);
 
-		stats.visible += 1;
-		stats.total += 1;
+		self.stats.borrow_mut().visible += 1;
+		self.stats.borrow_mut().total += 1;
 	}
 
 	/// Quickly display an `info` toast with default parameters. For more customization,
@@ -139,8 +138,6 @@ impl ToasterContext {
 
 	/// Removes the toast corresponding with the supplied `ToastId`.
 	pub fn remove(&self, toast_id: ToastId) {
-		let mut stats = self.stats.lock().unwrap();
-
 		let index = self.queue
 			.get_untracked()
 			.iter().enumerate()
@@ -152,7 +149,7 @@ impl ToasterContext {
 			queue.remove(index);
 			self.queue.set(queue);
 
-			stats.visible -= 1;
+			self.stats.borrow_mut().visible -= 1;
 		}
 	}
 }
@@ -160,7 +157,7 @@ impl ToasterContext {
 impl Default for ToasterContext {
 	fn default() -> Self {
 		ToasterContext {
-			stats: Arc::new(Mutex::new(ToasterStats::default())),
+			stats: RefCell::new(ToasterStats::default()),
 			queue: create_rw_signal(Vec::new()),
 		}
 	}
