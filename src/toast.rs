@@ -94,7 +94,7 @@ pub fn Toast(toast: ToastData) -> impl IntoView {
 				when=move || { toast.expiry.is_some() && toast.progress }
 			>
 				<div
-					style:height="4px"
+					style:height="var(--leptoaster-progress-height)"
 					style:width="100%"
 					style:background-color=text_color
 					style:position="absolute"

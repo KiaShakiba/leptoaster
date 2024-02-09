@@ -48,6 +48,8 @@ pub fn Toaster() -> impl IntoView {
 				--leptoaster-line-height: 20px;
 				--leptoaster-font-weight: 600;
 
+				--leptoaster-progress-height: 2px;
+
 				--leptoaster-info-background-color: #ffffff;
 				--leptoaster-info-border-color: #222222;
 				--leptoaster-info-text-color: #222222;
