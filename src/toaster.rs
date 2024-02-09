@@ -42,6 +42,7 @@ pub fn Toaster() -> impl IntoView {
 			:root {
 				--leptoaster-width: 320px;
 				--leptoaster-max-width: 80vw;
+				--leptoaster-z-index: 9999;
 
 				--leptoaster-font-family: Arial;
 				--leptoaster-font-size: 14px;
@@ -108,7 +109,7 @@ pub fn Toaster() -> impl IntoView {
 					style:margin=get_container_margin(position)
 					style:position="fixed"
 					style:inset=get_container_inset(position)
-					style:z-index="99999"
+					style:z-index="var(--leptoaster-z-index)"
 				>
 					<For
 						each=move || {

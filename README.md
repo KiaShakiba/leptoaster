@@ -69,6 +69,7 @@ To customize styling, override any of the following CSS variables:
 ```
 --leptoaster-width
 --leptoaster-max-width
+--leptoaster-z-index
 
 --leptoaster-font-family
 --leptoaster-font-size
