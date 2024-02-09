@@ -74,6 +74,8 @@ To customize styling, override any of the following CSS variables:
 --leptoaster-line-height
 --leptoaster-font-weight
 
+--leptoaster-progress-height
+
 --leptoaster-info-background-color
 --leptoaster-info-border-color
 --leptoaster-info-text-color
