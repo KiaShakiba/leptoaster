@@ -30,7 +30,10 @@ pub struct ToastData {
 	pub message: String,
 
 	pub level: ToastLevel,
+
+	pub dismissable: bool,
 	pub expiry: Option<u32>,
 	pub progress: bool,
+
 	pub position: ToastPosition,
 }

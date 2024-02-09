@@ -16,18 +16,22 @@ pub struct ToastBuilder {
 	message: String,
 
 	level: ToastLevel,
+
+	dismissable: bool,
 	expiry: Option<u32>,
 	progress: bool,
+
 	position: ToastPosition,
 }
 
 /// Builds a toast, allowing for the custimization of toast message,
-/// level, expiry, and position.
+/// level, dismissability, expiry, and position.
 ///
 /// The defaults are:
 /// * `level`: `ToastLevel::Info`
+/// * `dismissable`: `true`
 /// * `expiry`: `2_500`
-/// * `progress`: `false`
+/// * `progress`: `true`
 /// * `position`: `ToastPosition::BottomLeft`
 ///
 /// # Examples
@@ -51,8 +55,11 @@ impl ToastBuilder {
 			message: message.into(),
 
 			level: ToastLevel::Info,
+
+			dismissable: true,
 			expiry: Some(2_500),
 			progress: true,
+
 			position: ToastPosition::BottomLeft,
 		}
 	}
@@ -67,6 +74,20 @@ impl ToastBuilder {
 	#[must_use]
 	pub fn with_level(mut self, level: ToastLevel) -> Self {
 		self.level = level;
+		self
+	}
+
+	/// Sets the dismissable flag of the toast to allow or disallow the toast
+	/// from being dismissable on click.
+	///
+	/// # Examples
+	/// ```
+	/// ToastBuilder::new("My toast message.")
+	///     .with_dismissable(true); // allows the toast to be dismissable on click
+	/// ```
+	#[must_use]
+	pub fn with_dismissable(mut self, dismissable: bool) -> Self {
+		self.dismissable = dismissable;
 		self
 	}
 
@@ -117,8 +138,11 @@ impl ToastBuilder {
 			message: self.message,
 
 			level: self.level,
+
+			dismissable: self.dismissable,
 			expiry: self.expiry,
 			progress: self.progress,
+
 			position: self.position,
 		}
 	}

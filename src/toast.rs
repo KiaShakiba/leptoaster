@@ -48,6 +48,18 @@ pub fn Toast(toast: ToastData) -> impl IntoView {
 		expect_toaster().remove(toast.id);
 	});
 
+	let handle_click = move |_| {
+		if !toast.dismissable {
+			return;
+		}
+
+		set_animation_name(slide_out_animation_name);
+
+		Timeout::new(animation_duration, move || {
+			expect_toaster().remove(toast.id);
+		}).forget();
+	};
+
 	view! {
 		<div
 			style:width="100%"
@@ -58,7 +70,7 @@ pub fn Toast(toast: ToastData) -> impl IntoView {
 			style:border-color=border_color
 			style:border-radius="4px"
 			style:position="relative"
-			style:cursor="pointer"
+			style:cursor=get_cursor(toast.dismissable)
 			style:overflow="hidden"
 			style:box-sizing="border-box"
 			style:left=initial_left
@@ -68,13 +80,7 @@ pub fn Toast(toast: ToastData) -> impl IntoView {
 			style:animation-duration=format!("{}ms", animation_duration)
 			style:animation-timing-function="linear"
 			style:animation-fill-mode="forwards"
-			on:click=move |_| {
-				set_animation_name(slide_out_animation_name);
-
-				Timeout::new(animation_duration, move || {
-					expect_toaster().remove(toast.id);
-				}).forget();
-			}
+			on:click=handle_click
 		>
 			<span
 				style:color=text_color
@@ -156,6 +162,13 @@ fn get_initial_positions(position: &ToastPosition) -> (&'static str, &'static st
 	match position {
 		ToastPosition::TopLeft | ToastPosition::BottomLeft => ("calc((var(--leptoaster-width) + 12px * 2) * -1)", "auto"),
 		ToastPosition::TopRight | ToastPosition::BottomRight => ("auto", "calc((var(--leptoaster-width) + 12px * 2) * -1)"),
+	}
+}
+
+fn get_cursor(dismissable: bool) -> &'static str {
+	match dismissable {
+		true => "pointer",
+		false => "default",
 	}
 }
 
