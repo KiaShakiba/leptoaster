@@ -62,6 +62,17 @@ toaster.toast(
 );
 ```
 
+The `toaster` also allows you to clear all toasts currently visible on the screen, including non-expiring toasts:
+```
+#[component]
+fn MyComponent() -> IntoView {
+    let toaster = expect_toaster();
+
+    toaster.clear();
+}
+
+```
+
 ## Styling
 
 To customize styling, override any of the following CSS variables:
