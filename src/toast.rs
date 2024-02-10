@@ -9,12 +9,7 @@ mod data;
 mod builder;
 
 use leptos::*;
-
-use gloo_timers::{
-	future::TimeoutFuture,
-	callback::Timeout,
-};
-
+use gloo_timers::future::TimeoutFuture;
 use crate::toaster::expect_toaster;
 
 pub use crate::toast::data::{
