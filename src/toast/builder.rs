@@ -5,6 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+
+use leptos::*;
+
 use crate::toast::data::{
 	ToastId,
 	ToastLevel,
@@ -38,7 +41,7 @@ pub struct ToastBuilder {
 /// ```
 /// ToastBuilder::new("My toast message.")
 ///     .with_level(ToastLevel::Success)
-///     .with_expiry(2_500)
+///     .with_expiry(Some(2_500))
 ///     .with_progress(true)
 ///     .with_position(ToastPosition::BottomLeft);
 /// ```
@@ -144,6 +147,8 @@ impl ToastBuilder {
 			progress: self.progress,
 
 			position: self.position,
+
+			clear_signal: create_rw_signal(false),
 		}
 	}
 }

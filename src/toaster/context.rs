@@ -5,7 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-use std::cell::RefCell;
+use std::{
+	rc::Rc,
+	cell::RefCell,
+};
+
 use leptos::*;
 
 use crate::toast::{
@@ -28,7 +32,7 @@ use crate::toast::{
 ///  ```
 #[derive(Clone, Debug)]
 pub struct ToasterContext {
-	stats: RefCell<ToasterStats>,
+	stats: Rc<RefCell<ToasterStats>>,
 	pub queue: RwSignal<Vec<ToastData>>,
 }
 
@@ -136,6 +140,28 @@ impl ToasterContext {
 		);
 	}
 
+	/// Clears all currently visible toasts.
+	///
+	/// # Examples
+	/// ```
+	/// #[component]
+	/// fn Component() -> impl IntoView {
+	///     let toaster = expect_context::<ToasterContext>();
+	///
+	///     toaster.toast(
+	///         ToastBuilder::new("My toast message.")
+	///             .with_expiry(None) // the toast will not self-expire
+	///     );
+	///
+	///     toaster.clear();
+	/// }
+	/// ```
+	pub fn clear(&self) {
+		for toast in &self.queue.get_untracked() {
+			toast.clear_signal.set(true);
+		}
+	}
+
 	/// Removes the toast corresponding with the supplied `ToastId`.
 	pub fn remove(&self, toast_id: ToastId) {
 		let index = self.queue
@@ -157,7 +183,7 @@ impl ToasterContext {
 impl Default for ToasterContext {
 	fn default() -> Self {
 		ToasterContext {
-			stats: RefCell::new(ToasterStats::default()),
+			stats: Rc::new(RefCell::new(ToasterStats::default())),
 			queue: create_rw_signal(Vec::new()),
 		}
 	}

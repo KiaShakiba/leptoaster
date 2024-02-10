@@ -5,6 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+use leptos::*;
+
 pub type ToastId = u64;
 
 #[derive(Clone, PartialEq, Eq, Debug)]
@@ -36,4 +38,6 @@ pub struct ToastData {
 	pub progress: bool,
 
 	pub position: ToastPosition,
+
+	pub clear_signal: RwSignal<bool>,
 }

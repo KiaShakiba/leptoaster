@@ -43,9 +43,20 @@ pub fn Toast(toast: ToastData) -> impl IntoView {
 		};
 
 		TimeoutFuture::new(expiry).await;
-		set_animation_name(slide_out_animation_name);
-		TimeoutFuture::new(animation_duration).await;
-		expect_toaster().remove(toast.id);
+
+		if toast.clear_signal.get_untracked() {
+			return;
+		}
+
+		toast.clear_signal.set(true);
+	});
+
+	create_resource(move || toast.clear_signal.get(), move |clear| async move {
+		if clear {
+			set_animation_name(slide_out_animation_name);
+			TimeoutFuture::new(animation_duration).await;
+			expect_toaster().remove(toast.id);
+		}
 	});
 
 	let handle_click = move |_| {
@@ -53,11 +64,7 @@ pub fn Toast(toast: ToastData) -> impl IntoView {
 			return;
 		}
 
-		set_animation_name(slide_out_animation_name);
-
-		Timeout::new(animation_duration, move || {
-			expect_toaster().remove(toast.id);
-		}).forget();
+		toast.clear_signal.set(true);
 	};
 
 	view! {
