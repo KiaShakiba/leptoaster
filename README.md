@@ -12,7 +12,7 @@ Take a look at the demo [here](https://kiashakiba.github.io/leptoaster-demo).
 ## Getting started
 
 Assuming you already have Leptos installed, install Leptoaster
-```rust
+```
 cargo add leptoaster
 ```
 
