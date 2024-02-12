@@ -2,6 +2,9 @@
 
 Leptoaster is a minimal toast library for Leptos. It provides a simple interface to show toast messages to the user.
 
+[![Crates.io](https://img.shields.io/crates/v/leptoaster)](https://crates.io/crates/leptoaster)
+[![Documentation](https://docs.rs/leptoaster/badge.svg)](https://docs.rs/leptoaster)
+
 ## Demo
 
 Take a look at the demo [here](https://kiashakiba.github.io/leptoaster-demo).
@@ -9,12 +12,12 @@ Take a look at the demo [here](https://kiashakiba.github.io/leptoaster-demo).
 ## Getting started
 
 Assuming you already have Leptos installed, install Leptoaster
-```
+```rust
 cargo add leptoaster
 ```
 
 Once, installed, provide the toaster in the root component of your application and add the `Toaster` component.
-```
+```rust
 use leptos::*;
 use leptoaster::*;
 
@@ -30,7 +33,7 @@ fn App() -> IntoView {
 ```
 
 To create a toast message in any component, simple use `expect_toaster()`.
-```
+```rust
 use lepto::*;
 use leptoaster::*;
 
@@ -51,7 +54,7 @@ The `toaster` exposes a number of different kinds of toasts:
 * `error`
 
 For more customization, use the `toast` function along with the `ToastBuilder`:
-```
+```rust
 toaster.toast(
     ToastBuilder::new("My toast message goes here.")
         .with_level(ToastLevel::Success) // set the toast level (default is `ToastLevel::Info`)
@@ -63,7 +66,7 @@ toaster.toast(
 ```
 
 The `toaster` also allows you to clear all toasts currently visible on the screen, including non-expiring toasts:
-```
+```rust
 #[component]
 fn MyComponent() -> IntoView {
     let toaster = expect_toaster();
@@ -77,7 +80,7 @@ fn MyComponent() -> IntoView {
 
 To customize styling, override any of the following CSS variables:
 
-```
+```css
 --leptoaster-width
 --leptoaster-max-width
 --leptoaster-z-index
