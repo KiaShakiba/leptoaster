@@ -78,6 +78,8 @@ pub fn Toast(toast: ToastData) -> impl IntoView {
 			style:left=initial_left
 			style:right=initial_right
 			style:display="flex"
+			style:transition="transform 150ms ease-out, opacity 150ms ease-out"
+			style:transition-delay="250ms, 0s"
 			style:animation-name=animation_name
 			style:animation-duration=format!("{}ms", animation_duration)
 			style:animation-timing-function="linear"

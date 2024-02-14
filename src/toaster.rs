@@ -20,6 +20,8 @@ const CONTAINER_POSITIONS: &[ToastPosition] = &[
 
 /// Creates the toaster containers as fixed-position elements on the corners of the screen.
 ///
+/// Takes an optional prop that defines whether or not the toasts are stacked.
+///
 /// # Examples
 /// ```
 /// use leptos::*;
@@ -28,12 +30,15 @@ const CONTAINER_POSITIONS: &[ToastPosition] = &[
 /// #[component]
 /// fn App() -> impl IntoView {
 ///     view! {
-///         <Toaster />
+///         <Toaster stacked={true} />
 ///     }
 /// }
 /// ```
 #[component]
-pub fn Toaster() -> impl IntoView {
+pub fn Toaster(
+	#[prop(optional, into)]
+	stacked: MaybeSignal<bool>,
+) -> impl IntoView {
 	let toaster = expect_toaster();
 
 	view! {
@@ -66,6 +71,40 @@ pub fn Toaster() -> impl IntoView {
 				--leptoaster-error-background-color: #f44336;
 				--leptoaster-error-border-color: #c62828;
 				--leptoaster-error-text-color: #ffffff;
+			}
+
+			.leptoaster-stack-container:hover > div {
+				opacity: 1 !important;
+				transform: translateY(0) scaleX(1) !important;
+				transition-delay: 0s !important;
+			}
+
+			.leptoaster-stack-container > div:nth-last-child(1) {
+				z-index: 9999;
+			}
+
+			.leptoaster-stack-container > div:nth-last-child(2) {
+				transform: translateY(58px) scaleX(0.98);
+				z-index: 9998;
+			}
+
+			.leptoaster-stack-container > div:nth-last-child(3) {
+				transform: translateY(116px) scaleX(0.96);
+				z-index: 9997;
+			}
+
+			.leptoaster-stack-container > div:nth-last-child(4) {
+				transform: translateY(174px) scaleX(0.94);
+				z-index: 9996;
+			}
+
+			.leptoaster-stack-container > div:nth-last-child(5) {
+				transform: translateY(232px) scaleX(0.92);
+				z-index: 9995;
+			}
+
+			.leptoaster-stack-container > div:nth-last-child(n+6) {
+				opacity: 0;
 			}
 
 			@keyframes leptoaster-slide-in-left {
@@ -104,6 +143,7 @@ pub fn Toaster() -> impl IntoView {
 				when=move || !is_container_empty(position)
 			>
 				<div
+					class=get_container_class(stacked())
 					style:width="var(--leptoaster-width)"
 					style:max-width="var(--leptoaster-max-width)"
 					style:margin=get_container_margin(position)
@@ -168,5 +208,12 @@ fn get_container_margin(position: &ToastPosition) -> &'static str {
 	match position {
 		ToastPosition::TopLeft | ToastPosition::BottomLeft => "0 0 0 12px",
 		ToastPosition::TopRight | ToastPosition::BottomRight => "0 12px 0 0",
+	}
+}
+
+fn get_container_class(stacked: bool) -> Option<&'static str> {
+	match stacked {
+		true => Some("leptoaster-stack-container"),
+		false => None,
 	}
 }

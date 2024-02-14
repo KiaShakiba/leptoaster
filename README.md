@@ -32,6 +32,22 @@ fn App() -> IntoView {
 }
 ```
 
+The `Toaster` component takes an optional `bool` property, `stacked` which defines whether or not the toasts should be stacked.
+```rust
+use leptos::*;
+use leptoaster::*;
+
+#[component]
+fn App() -> IntoView {
+    provide_toaster();
+
+    view! {
+        <Toaster stacked={true} />
+        // your other components
+    }
+}
+```
+
 To create a toast message in any component, simple use `expect_toaster()`.
 ```rust
 use lepto::*;
