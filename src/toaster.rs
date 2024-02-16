@@ -73,37 +73,72 @@ pub fn Toaster(
 				--leptoaster-error-text-color: #ffffff;
 			}
 
-			.leptoaster-stack-container:hover > div {
+			.leptoaster-stack-container-bottom:hover > div,
+			.leptoaster-stack-container-top:hover > div {
 				opacity: 1 !important;
 				transform: translateY(0) scaleX(1) !important;
 				transition-delay: 0s !important;
 			}
 
-			.leptoaster-stack-container > div:nth-last-child(1) {
+			.leptoaster-stack-container-bottom > div:nth-last-child(1),
+			.leptoaster-stack-container-top > div:nth-child(1) {
 				z-index: 9999;
 			}
 
-			.leptoaster-stack-container > div:nth-last-child(2) {
-				transform: translateY(58px) scaleX(0.98);
+			.leptoaster-stack-container-bottom > div:nth-last-child(2),
+			.leptoaster-stack-container-top > div:nth-child(2) {
 				z-index: 9998;
 			}
 
-			.leptoaster-stack-container > div:nth-last-child(3) {
-				transform: translateY(116px) scaleX(0.96);
+			.leptoaster-stack-container-bottom > div:nth-last-child(2) {
+				transform: translateY(62px) scaleX(0.98);
+			}
+
+			.leptoaster-stack-container-top > div:nth-child(2) {
+				transform: translateY(-62px) scaleX(0.98);
+			}
+
+			.leptoaster-stack-container-bottom > div:nth-last-child(3),
+			.leptoaster-stack-container-top > div:nth-child(3) {
 				z-index: 9997;
 			}
 
-			.leptoaster-stack-container > div:nth-last-child(4) {
-				transform: translateY(174px) scaleX(0.94);
+			.leptoaster-stack-container-bottom > div:nth-last-child(3) {
+				transform: translateY(124px) scaleX(0.96);
+			}
+
+			.leptoaster-stack-container-top > div:nth-child(3) {
+				transform: translateY(-124px) scaleX(0.96);
+			}
+
+			.leptoaster-stack-container-bottom > div:nth-last-child(4),
+			.leptoaster-stack-container-top > div:nth-child(4) {
 				z-index: 9996;
 			}
 
-			.leptoaster-stack-container > div:nth-last-child(5) {
-				transform: translateY(232px) scaleX(0.92);
+			.leptoaster-stack-container-bottom > div:nth-last-child(4) {
+				transform: translateY(186px) scaleX(0.94);
+			}
+
+			.leptoaster-stack-container-top > div:nth-child(4) {
+				transform: translateY(-186px) scaleX(0.94);
+			}
+
+			.leptoaster-stack-container-bottom > div:nth-last-child(5),
+			.leptoaster-stack-container-top > div:nth-child(5) {
 				z-index: 9995;
 			}
 
-			.leptoaster-stack-container > div:nth-last-child(n+6) {
+			.leptoaster-stack-container-bottom > div:nth-last-child(5) {
+				transform: translateY(248px) scaleX(0.92);
+			}
+
+			.leptoaster-stack-container-top > div:nth-child(5) {
+				transform: translateY(-248px) scaleX(0.92);
+			}
+
+			.leptoaster-stack-container-bottom > div:nth-last-child(n+6),
+			.leptoaster-stack-container-top > div:nth-child(n+6) {
 				opacity: 0;
 			}
 
@@ -143,7 +178,7 @@ pub fn Toaster(
 				when=move || !is_container_empty(position)
 			>
 				<div
-					class=get_container_class(stacked())
+					class=get_container_class(stacked(), position)
 					style:width="var(--leptoaster-width)"
 					style:max-width="var(--leptoaster-max-width)"
 					style:margin=get_container_margin(position)
@@ -153,10 +188,22 @@ pub fn Toaster(
 				>
 					<For
 						each=move || {
-							toaster.queue
-								.get().iter()
-								.filter(|toast| toast.position.eq(position)).cloned()
-								.collect::<Vec<ToastData>>()
+							let toasts = toaster.queue.get();
+
+							match position {
+								ToastPosition::BottomLeft | ToastPosition::BottomRight => {
+									toasts.iter()
+										.filter(|toast| toast.position.eq(position)).cloned()
+										.collect::<Vec<ToastData>>()
+								},
+
+								ToastPosition::TopLeft | ToastPosition::TopRight => {
+									toasts.iter()
+										.filter(|toast| toast.position.eq(position)).cloned()
+										.rev()
+										.collect::<Vec<ToastData>>()
+								},
+							}
 						}
 						key=|toast| toast.id
 						let:toast
@@ -211,9 +258,13 @@ fn get_container_margin(position: &ToastPosition) -> &'static str {
 	}
 }
 
-fn get_container_class(stacked: bool) -> Option<&'static str> {
-	match stacked {
-		true => Some("leptoaster-stack-container"),
-		false => None,
+fn get_container_class(stacked: bool, position: &ToastPosition) -> Option<&'static str> {
+	if !stacked {
+		return None;
+	}
+
+	match position {
+		ToastPosition::BottomLeft | ToastPosition::BottomRight => Some("leptoaster-stack-container-bottom"),
+		ToastPosition::TopLeft | ToastPosition::TopRight => Some("leptoaster-stack-container-top"),
 	}
 }
