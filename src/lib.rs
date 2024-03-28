@@ -5,19 +5,20 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-mod toaster;
 mod toast;
+mod toaster;
 
 pub use crate::{
-	toaster::{
-		Toaster,
-		provide_toaster,
-		expect_toaster,
-	},
-
-	toast::{
-		ToastBuilder,
-		ToastLevel,
-		ToastPosition,
-	},
+    toast::{ToastBuilder, ToastLevel, ToastPosition},
+    toaster::{expect_toaster, provide_toaster, Toaster},
 };
+
+pub fn demo() {
+    let toaster = crate::expect_toaster();
+
+    toaster.toast(
+        crate::ToastBuilder::new("My toast message.")
+            .with_level(ToastLevel::Info)
+            .with_position(ToastPosition::TopRight),
+    );
+}
