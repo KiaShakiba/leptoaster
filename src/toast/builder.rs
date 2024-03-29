@@ -9,6 +9,7 @@ use leptos::*;
 
 use crate::toast::data::{ToastData, ToastId, ToastLevel, ToastPosition};
 
+#[derive(Clone, Debug)]
 pub struct ToastBuilder {
     message: String,
 
@@ -61,6 +62,10 @@ impl ToastBuilder {
         }
     }
 
+    pub(crate) fn with_message(mut self, level: impl AsRef<str>) -> Self {
+        self.message = level.as_ref().into();
+        self
+    }
     /// Sets the level of the toast.
     ///
     /// # Examples
@@ -144,5 +149,10 @@ impl ToastBuilder {
 
             clear_signal: create_rw_signal(false),
         }
+    }
+}
+impl Default for ToastBuilder {
+    fn default() -> Self {
+        ToastBuilder::new("")
     }
 }

@@ -7,8 +7,11 @@
 
 pub mod context;
 
-use crate::toast::{Toast, ToastData, ToastPosition};
 use crate::toaster::context::ToasterContext;
+use crate::{
+    toast::{Toast, ToastData, ToastPosition},
+    ToastBuilder,
+};
 use leptos::*;
 
 const CONTAINER_POSITIONS: &[ToastPosition] = &[
@@ -216,6 +219,17 @@ pub fn Toaster(#[prop(optional, into)] stacked: MaybeSignal<bool>) -> impl IntoV
 pub fn provide_toaster() {
     if use_context::<ToasterContext>().is_none() {
         provide_context(ToasterContext::default());
+    }
+}
+/// Provides the toaster context with the supplied defaults.
+/// Example:
+/// ```ignore
+/// use leptoaster::*;
+/// provide_toaster_with_defaults(ToastBuilder::default().with_position(ToastPosition::TopRight));
+/// ```
+pub fn provide_toaster_with_defaults(defaults: ToastBuilder) {
+    if use_context::<ToasterContext>().is_none() {
+        provide_context(ToasterContext::new_with_defaults(defaults));
     }
 }
 

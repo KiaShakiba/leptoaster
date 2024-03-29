@@ -26,6 +26,7 @@ use crate::toast::{ToastBuilder, ToastData, ToastId, ToastLevel};
 pub struct ToasterContext {
     stats: Rc<RefCell<ToasterStats>>,
     pub queue: RwSignal<Vec<ToastData>>,
+    defaults: Option<ToastBuilder>,
 }
 
 #[derive(Clone, Default, Debug)]
@@ -35,6 +36,13 @@ struct ToasterStats {
 }
 
 impl ToasterContext {
+    pub(crate) fn new_with_defaults(defaults: ToastBuilder) -> Self {
+        ToasterContext {
+            stats: Rc::new(RefCell::new(ToasterStats::default())),
+            queue: create_rw_signal(Vec::new()),
+            defaults: Some(defaults),
+        }
+    }
     /// Adds the supplied toast to the toast queue, displaying it onto the screen.
     ///
     /// # Examples
@@ -72,7 +80,14 @@ impl ToasterContext {
     /// }
     /// ```
     pub fn info(&self, message: &str) {
-        self.toast(ToastBuilder::new(message).with_level(ToastLevel::Info));
+        self.toast(
+            self.defaults
+                .as_ref()
+                .map(|defaults| defaults.clone().with_message(message))
+                .unwrap_or_else(|| ToastBuilder::new(message))
+                .with_level(ToastLevel::Info),
+        );
+        // ToastBuilder::new(message).with_level(ToastLevel::Info));
     }
 
     /// Quickly display a `success` toast with default parameters. For more customization,
@@ -87,7 +102,13 @@ impl ToasterContext {
     /// }
     /// ```
     pub fn success(&self, message: &str) {
-        self.toast(ToastBuilder::new(message).with_level(ToastLevel::Success));
+        self.toast(
+            self.defaults
+                .as_ref()
+                .map(|defaults| defaults.clone().with_message(message))
+                .unwrap_or_else(|| ToastBuilder::new(message))
+                .with_level(ToastLevel::Success),
+        );
     }
 
     /// Quickly display a `warn` toast with default parameters. For more customization,
@@ -102,7 +123,13 @@ impl ToasterContext {
     /// }
     /// ```
     pub fn warn(&self, message: &str) {
-        self.toast(ToastBuilder::new(message).with_level(ToastLevel::Warn));
+        self.toast(
+            self.defaults
+                .as_ref()
+                .map(|defaults| defaults.clone().with_message(message))
+                .unwrap_or_else(|| ToastBuilder::new(message))
+                .with_level(ToastLevel::Warn),
+        );
     }
 
     /// Quickly display an `error` toast with default parameters. For more customization,
@@ -117,7 +144,13 @@ impl ToasterContext {
     /// }
     /// ```
     pub fn error(&self, message: &str) {
-        self.toast(ToastBuilder::new(message).with_level(ToastLevel::Error));
+        self.toast(
+            self.defaults
+                .as_ref()
+                .map(|defaults| defaults.clone().with_message(message))
+                .unwrap_or_else(|| ToastBuilder::new(message))
+                .with_level(ToastLevel::Error),
+        );
     }
 
     /// Clears all currently visible toasts.
@@ -167,6 +200,7 @@ impl Default for ToasterContext {
         ToasterContext {
             stats: Rc::new(RefCell::new(ToasterStats::default())),
             queue: create_rw_signal(Vec::new()),
+            defaults: None,
         }
     }
 }
