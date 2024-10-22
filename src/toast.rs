@@ -34,14 +34,14 @@ pub fn Toast(toast: ToastData) -> impl IntoView {
                         toast.clear_signal.set(true);
                     }
                 },
-                std::time::Duration::from_millis(expiry),
+                std::time::Duration::from_millis(expiry as u64),
             );
         }
     });
 
     create_effect(move |_| {
         if toast.clear_signal.get() {
-            set_animation_name(slide_out_animation_name);
+            set_animation_name.set(slide_out_animation_name);
             set_timeout(
                 move || {
                     expect_toaster().remove(toast.id);

@@ -15,4 +15,4 @@ leptos = { version = "0.6.0" }
 [features]
 csr = ["leptos/csr"]
 ssr = ["leptos/ssr"]
-hydrate = ["leptos/hydrate", ""]
+hydrate = ["leptos/hydrate"]
