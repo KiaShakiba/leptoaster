@@ -9,7 +9,7 @@ pub mod context;
 
 use crate::toast::{Toast, ToastData, ToastPosition};
 use crate::toaster::context::ToasterContext;
-use leptos::*;
+use leptos::prelude::*;
 
 const CONTAINER_POSITIONS: &[ToastPosition] = &[
     ToastPosition::TopLeft,
@@ -35,7 +35,7 @@ const CONTAINER_POSITIONS: &[ToastPosition] = &[
 /// }
 /// ```
 #[component]
-pub fn Toaster(#[prop(optional, into)] stacked: MaybeSignal<bool>) -> impl IntoView {
+pub fn Toaster(#[prop(optional, into)] stacked: Signal<bool>) -> impl IntoView {
     let toaster = expect_toaster();
 
     view! {

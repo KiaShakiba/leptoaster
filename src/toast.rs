@@ -9,7 +9,7 @@ mod builder;
 mod data;
 
 use crate::toaster::expect_toaster;
-use leptos::*;
+use leptos::prelude::*;
 
 pub use crate::toast::data::{ToastData, ToastId, ToastLevel, ToastPosition};
 
@@ -21,12 +21,12 @@ pub fn Toast(toast: ToastData) -> impl IntoView {
     let slide_in_animation_name = get_slide_in_animation_name(&toast.position);
     let slide_out_animation_name = get_slide_out_animation_name(&toast.position);
 
-    let (animation_name, set_animation_name) = create_signal(slide_in_animation_name);
+    let (animation_name, set_animation_name) = signal(slide_in_animation_name);
 
     let (background_color, border_color, text_color) = get_colors(&toast.level);
     let (initial_left, initial_right) = get_initial_positions(&toast.position);
 
-    create_effect(move |_| {
+    Effect::new(move |_| {
         if let Some(expiry) = toast.expiry {
             set_timeout(
                 move || {
@@ -39,7 +39,7 @@ pub fn Toast(toast: ToastData) -> impl IntoView {
         }
     });
 
-    create_effect(move |_| {
+    Effect::new(move |_| {
         if toast.clear_signal.get() {
             set_animation_name.set(slide_out_animation_name);
             set_timeout(

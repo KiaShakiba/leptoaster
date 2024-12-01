@@ -10,7 +10,7 @@ keywords = ["leptos", "toast", "web", "ui", "userinterface"]
 categories = ["gui", "web-programming"]
 
 [dependencies]
-leptos = { version = "0.6.0" }
+leptos = { version = "0.7.0" }
 
 [features]
 csr = ["leptos/csr"]
