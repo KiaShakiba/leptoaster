@@ -48,7 +48,7 @@ pub fn Toast(toast: ToastData) -> impl IntoView {
 
 	create_resource(move || toast.clear_signal.get(), move |clear| async move {
 		if clear {
-			set_animation_name(slide_out_animation_name);
+			set_animation_name.set(slide_out_animation_name);
 			TimeoutFuture::new(animation_duration).await;
 			expect_toaster().remove(toast.id);
 		}

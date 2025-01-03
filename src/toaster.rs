@@ -178,7 +178,7 @@ pub fn Toaster(
 				when=move || !is_container_empty(position)
 			>
 				<div
-					class=get_container_class(stacked(), position)
+					class=get_container_class(stacked.get(), position)
 					style:width="var(--leptoaster-width)"
 					style:max-width="var(--leptoaster-max-width)"
 					style:margin=get_container_margin(position)
