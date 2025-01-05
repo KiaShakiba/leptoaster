@@ -5,19 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-mod toaster;
 mod toast;
+mod toaster;
 
 pub use crate::{
-	toaster::{
-		Toaster,
-		provide_toaster,
-		expect_toaster,
-	},
-
-	toast::{
-		ToastBuilder,
-		ToastLevel,
-		ToastPosition,
-	},
+	toast::{ToastBuilder, ToastLevel, ToastPosition},
+	toaster::{expect_toaster, provide_toaster, Toaster},
 };

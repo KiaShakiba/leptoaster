@@ -5,23 +5,15 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-use std::{
-	rc::Rc,
-	cell::RefCell,
-};
+use std::{cell::RefCell, rc::Rc};
 
 use leptos::*;
 
-use crate::toast::{
-	ToastBuilder,
-	ToastData,
-	ToastId,
-	ToastLevel,
-};
+use crate::toast::{ToastBuilder, ToastData, ToastId, ToastLevel};
 
-/// The global context of the toaster. You should provide this as a global context
-/// in your root component to allow any component in your application to toast
-/// using the same toast queue.
+/// The global context of the toaster. You should provide this as a global
+/// context in your root component to allow any component in your application to
+/// toast using the same toast queue.
 ///
 ///  # Examples
 ///  ```
@@ -43,7 +35,8 @@ struct ToasterStats {
 }
 
 impl ToasterContext {
-	/// Adds the supplied toast to the toast queue, displaying it onto the screen.
+	/// Adds the supplied toast to the toast queue, displaying it onto the
+	/// screen.
 	///
 	/// # Examples
 	/// ```
@@ -68,8 +61,8 @@ impl ToasterContext {
 		self.stats.borrow_mut().total += 1;
 	}
 
-	/// Quickly display an `info` toast with default parameters. For more customization,
-	/// use the `toast` function.
+	/// Quickly display an `info` toast with default parameters. For more
+	/// customization, use the `toast` function.
 	///
 	/// # Examples
 	/// ```
@@ -80,14 +73,11 @@ impl ToasterContext {
 	/// }
 	/// ```
 	pub fn info(&self, message: &str) {
-		self.toast(
-			ToastBuilder::new(message)
-				.with_level(ToastLevel::Info)
-		);
+		self.toast(ToastBuilder::new(message).with_level(ToastLevel::Info));
 	}
 
-	/// Quickly display a `success` toast with default parameters. For more customization,
-	/// use the `toast` function.
+	/// Quickly display a `success` toast with default parameters. For more
+	/// customization, use the `toast` function.
 	///
 	/// # Examples
 	/// ```
@@ -98,14 +88,11 @@ impl ToasterContext {
 	/// }
 	/// ```
 	pub fn success(&self, message: &str) {
-		self.toast(
-			ToastBuilder::new(message)
-				.with_level(ToastLevel::Success)
-		);
+		self.toast(ToastBuilder::new(message).with_level(ToastLevel::Success));
 	}
 
-	/// Quickly display a `warn` toast with default parameters. For more customization,
-	/// use the `toast` function.
+	/// Quickly display a `warn` toast with default parameters. For more
+	/// customization, use the `toast` function.
 	///
 	/// # Examples
 	/// ```
@@ -116,14 +103,11 @@ impl ToasterContext {
 	/// }
 	/// ```
 	pub fn warn(&self, message: &str) {
-		self.toast(
-			ToastBuilder::new(message)
-				.with_level(ToastLevel::Warn)
-		);
+		self.toast(ToastBuilder::new(message).with_level(ToastLevel::Warn));
 	}
 
-	/// Quickly display an `error` toast with default parameters. For more customization,
-	/// use the `toast` function.
+	/// Quickly display an `error` toast with default parameters. For more
+	/// customization, use the `toast` function.
 	///
 	/// # Examples
 	/// ```
@@ -134,10 +118,7 @@ impl ToasterContext {
 	/// }
 	/// ```
 	pub fn error(&self, message: &str) {
-		self.toast(
-			ToastBuilder::new(message)
-				.with_level(ToastLevel::Error)
-		);
+		self.toast(ToastBuilder::new(message).with_level(ToastLevel::Error));
 	}
 
 	/// Clears all currently visible toasts.
@@ -164,9 +145,11 @@ impl ToasterContext {
 
 	/// Removes the toast corresponding with the supplied `ToastId`.
 	pub fn remove(&self, toast_id: ToastId) {
-		let index = self.queue
+		let index = self
+			.queue
 			.get_untracked()
-			.iter().enumerate()
+			.iter()
+			.enumerate()
 			.find(|(_, toast)| toast.id == toast_id)
 			.map(|(index, _)| index);
 

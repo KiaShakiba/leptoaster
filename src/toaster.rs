@@ -8,8 +8,11 @@
 pub mod context;
 
 use leptos::*;
-use crate::toaster::context::ToasterContext;
-use crate::toast::{Toast, ToastData, ToastPosition};
+
+use crate::{
+	toast::{Toast, ToastData, ToastPosition},
+	toaster::context::ToasterContext,
+};
 
 const CONTAINER_POSITIONS: &[ToastPosition] = &[
 	ToastPosition::TopLeft,
@@ -18,7 +21,8 @@ const CONTAINER_POSITIONS: &[ToastPosition] = &[
 	ToastPosition::BottomLeft,
 ];
 
-/// Creates the toaster containers as fixed-position elements on the corners of the screen.
+/// Creates the toaster containers as fixed-position elements on the corners of
+/// the screen.
 ///
 /// Takes an optional prop that defines whether or not the toasts are stacked.
 ///
@@ -36,8 +40,7 @@ const CONTAINER_POSITIONS: &[ToastPosition] = &[
 /// ```
 #[component]
 pub fn Toaster(
-	#[prop(optional, into)]
-	stacked: MaybeSignal<bool>,
+	#[prop(optional, into)] stacked: MaybeSignal<bool>,
 ) -> impl IntoView {
 	let toaster = expect_toaster();
 
@@ -228,8 +231,10 @@ pub fn expect_toaster() -> ToasterContext {
 }
 
 fn is_container_empty(position: &ToastPosition) -> bool {
-	!expect_toaster().queue
-		.get().iter()
+	!expect_toaster()
+		.queue
+		.get()
+		.iter()
 		.any(|toast| toast.position.eq(position))
 }
 
@@ -258,13 +263,21 @@ fn get_container_margin(position: &ToastPosition) -> &'static str {
 	}
 }
 
-fn get_container_class(stacked: bool, position: &ToastPosition) -> Option<&'static str> {
+fn get_container_class(
+	stacked: bool,
+	position: &ToastPosition,
+) -> Option<&'static str> {
 	if !stacked {
 		return None;
 	}
 
 	match position {
-		ToastPosition::BottomLeft | ToastPosition::BottomRight => Some("leptoaster-stack-container-bottom"),
-		ToastPosition::TopLeft | ToastPosition::TopRight => Some("leptoaster-stack-container-top"),
+		ToastPosition::BottomLeft | ToastPosition::BottomRight => {
+			Some("leptoaster-stack-container-bottom")
+		},
+
+		ToastPosition::TopLeft | ToastPosition::TopRight => {
+			Some("leptoaster-stack-container-top")
+		},
 	}
 }

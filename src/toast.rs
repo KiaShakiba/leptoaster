@@ -5,19 +5,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-mod data;
 mod builder;
+mod data;
 
-use leptos::*;
 use gloo_timers::future::TimeoutFuture;
-use crate::toaster::expect_toaster;
+use leptos::*;
 
-pub use crate::toast::data::{
-	ToastData,
-	ToastId,
-	ToastLevel,
-	ToastPosition,
-};
+pub use crate::toast::data::{ToastData, ToastId, ToastLevel, ToastPosition};
+use crate::toaster::expect_toaster;
 
 /// A toast element with the supplied alert style.
 #[component]
@@ -25,34 +20,43 @@ pub fn Toast(toast: ToastData) -> impl IntoView {
 	let animation_duration = 200;
 
 	let slide_in_animation_name = get_slide_in_animation_name(&toast.position);
-	let slide_out_animation_name = get_slide_out_animation_name(&toast.position);
 
-	let (animation_name, set_animation_name) = create_signal(slide_in_animation_name);
+	let slide_out_animation_name =
+		get_slide_out_animation_name(&toast.position);
+
+	let (animation_name, set_animation_name) =
+		create_signal(slide_in_animation_name);
 
 	let (background_color, border_color, text_color) = get_colors(&toast.level);
 	let (initial_left, initial_right) = get_initial_positions(&toast.position);
 
-	create_resource(|| (), move |()| async move {
-		let Some(expiry) = toast.expiry else {
-			return;
-		};
+	create_resource(
+		|| (),
+		move |()| async move {
+			let Some(expiry) = toast.expiry else {
+				return;
+			};
 
-		TimeoutFuture::new(expiry).await;
+			TimeoutFuture::new(expiry).await;
 
-		if toast.clear_signal.get_untracked() {
-			return;
-		}
+			if toast.clear_signal.get_untracked() {
+				return;
+			}
 
-		toast.clear_signal.set(true);
-	});
+			toast.clear_signal.set(true);
+		},
+	);
 
-	create_resource(move || toast.clear_signal.get(), move |clear| async move {
-		if clear {
-			set_animation_name(slide_out_animation_name);
-			TimeoutFuture::new(animation_duration).await;
-			expect_toaster().remove(toast.id);
-		}
-	});
+	create_resource(
+		move || toast.clear_signal.get(),
+		move |clear| async move {
+			if clear {
+				set_animation_name(slide_out_animation_name);
+				TimeoutFuture::new(animation_duration).await;
+				expect_toaster().remove(toast.id);
+			}
+		},
+	);
 
 	let handle_click = move |_| {
 		if !toast.dismissable {
@@ -122,19 +126,29 @@ pub fn Toast(toast: ToastData) -> impl IntoView {
 
 fn get_slide_in_animation_name(position: &ToastPosition) -> &'static str {
 	match position {
-		ToastPosition::TopLeft | ToastPosition::BottomLeft => "leptoaster-slide-in-left",
-		ToastPosition::TopRight | ToastPosition::BottomRight => "leptoaster-slide-in-right",
+		ToastPosition::TopLeft | ToastPosition::BottomLeft => {
+			"leptoaster-slide-in-left"
+		},
+		ToastPosition::TopRight | ToastPosition::BottomRight => {
+			"leptoaster-slide-in-right"
+		},
 	}
 }
 
 fn get_slide_out_animation_name(position: &ToastPosition) -> &'static str {
 	match position {
-		ToastPosition::TopLeft | ToastPosition::BottomLeft => "leptoaster-slide-out-left",
-		ToastPosition::TopRight | ToastPosition::BottomRight => "leptoaster-slide-out-right",
+		ToastPosition::TopLeft | ToastPosition::BottomLeft => {
+			"leptoaster-slide-out-left"
+		},
+		ToastPosition::TopRight | ToastPosition::BottomRight => {
+			"leptoaster-slide-out-right"
+		},
 	}
 }
 
-fn get_colors(level: &ToastLevel) -> (&'static str, &'static str, &'static str) {
+fn get_colors(
+	level: &ToastLevel,
+) -> (&'static str, &'static str, &'static str) {
 	match level {
 		ToastLevel::Info => (
 			"var(--leptoaster-info-background-color)",
@@ -162,10 +176,16 @@ fn get_colors(level: &ToastLevel) -> (&'static str, &'static str, &'static str) 
 	}
 }
 
-fn get_initial_positions(position: &ToastPosition) -> (&'static str, &'static str) {
+fn get_initial_positions(
+	position: &ToastPosition,
+) -> (&'static str, &'static str) {
 	match position {
-		ToastPosition::TopLeft | ToastPosition::BottomLeft => ("calc((var(--leptoaster-width) + 12px * 2) * -1)", "auto"),
-		ToastPosition::TopRight | ToastPosition::BottomRight => ("auto", "calc((var(--leptoaster-width) + 12px * 2) * -1)"),
+		ToastPosition::TopLeft | ToastPosition::BottomLeft => {
+			("calc((var(--leptoaster-width) + 12px * 2) * -1)", "auto")
+		},
+		ToastPosition::TopRight | ToastPosition::BottomRight => {
+			("auto", "calc((var(--leptoaster-width) + 12px * 2) * -1)")
+		},
 	}
 }
 

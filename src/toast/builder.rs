@@ -5,15 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-
 use leptos::*;
 
-use crate::toast::data::{
-	ToastId,
-	ToastLevel,
-	ToastPosition,
-	ToastData,
-};
+use crate::toast::data::{ToastData, ToastId, ToastLevel, ToastPosition};
 
 pub struct ToastBuilder {
 	message: String,
@@ -107,7 +101,8 @@ impl ToastBuilder {
 		self
 	}
 
-	/// Sets the expiry time of the toast in milliseconds, or disables it on `None`.
+	/// Sets the expiry time of the toast in milliseconds, or disables it on
+	/// `None`.
 	///
 	/// # Examples
 	/// ```
