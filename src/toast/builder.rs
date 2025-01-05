@@ -10,15 +10,15 @@ use leptos::prelude::RwSignal;
 use crate::toast::data::{ToastData, ToastId, ToastLevel, ToastPosition};
 
 pub struct ToastBuilder {
-    message: String,
+	message: String,
 
-    level: ToastLevel,
+	level: ToastLevel,
 
-    dismissable: bool,
-    expiry: Option<u32>,
-    progress: bool,
+	dismissable: bool,
+	expiry: Option<u32>,
+	progress: bool,
 
-    position: ToastPosition,
+	position: ToastPosition,
 }
 
 /// Builds a toast, allowing for the custimization of toast message,
@@ -143,7 +143,7 @@ impl ToastBuilder {
 
 			position: self.position,
 
-			clear_signal: create_rw_signal(false),
+			clear_signal: RwSignal::new(false),
 		}
 	}
 }

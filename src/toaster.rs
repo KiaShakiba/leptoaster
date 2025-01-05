@@ -8,16 +8,17 @@
 pub mod context;
 
 use leptos::prelude::*;
+
 use crate::{
 	toast::{Toast, ToastData, ToastPosition},
 	toaster::context::ToasterContext,
 };
 
 const CONTAINER_POSITIONS: &[ToastPosition] = &[
-    ToastPosition::TopLeft,
-    ToastPosition::TopRight,
-    ToastPosition::BottomRight,
-    ToastPosition::BottomLeft,
+	ToastPosition::TopLeft,
+	ToastPosition::TopRight,
+	ToastPosition::BottomRight,
+	ToastPosition::BottomLeft,
 ];
 
 /// Creates the toaster containers as fixed-position elements on the corners of
@@ -37,6 +38,7 @@ const CONTAINER_POSITIONS: &[ToastPosition] = &[
 ///     }
 /// }
 /// ```
+#[component]
 pub fn Toaster(
 	#[prop(optional, into)] stacked: MaybeSignal<bool>,
 ) -> impl IntoView {
@@ -168,64 +170,64 @@ pub fn Toaster(
 				to { width: 0; }
 			}
 			"
-        </style>
+		</style>
 
-        <For
-            each=move || CONTAINER_POSITIONS
-            key=|position| get_container_id(position)
-            let:position
-        >
-            <Show
-                when=move || !is_container_empty(position)
-            >
-                <div
-                    class=get_container_class(stacked.get(), position)
-                    style:width="var(--leptoaster-width)"
-                    style:max-width="var(--leptoaster-max-width)"
-                    style:margin=get_container_margin(position)
-                    style:position="fixed"
-                    style:inset=get_container_inset(position)
-                    style:z-index="var(--leptoaster-z-index)"
-                >
-                    <For
-                        each=move || {
-                            let toasts = toaster.queue.get();
+		<For
+			each=move || CONTAINER_POSITIONS
+			key=|position| get_container_id(position)
+			let:position
+		>
+			<Show
+				when=move || !is_container_empty(position)
+			>
+				<div
+					class=get_container_class(stacked.get(), position)
+					style:width="var(--leptoaster-width)"
+					style:max-width="var(--leptoaster-max-width)"
+					style:margin=get_container_margin(position)
+					style:position="fixed"
+					style:inset=get_container_inset(position)
+					style:z-index="var(--leptoaster-z-index)"
+				>
+					<For
+						each=move || {
+							let toasts = toaster.queue.get();
 
-                            match position {
-                                ToastPosition::BottomLeft | ToastPosition::BottomRight => {
-                                    toasts.iter()
-                                        .filter(|toast| toast.position.eq(position)).cloned()
-                                        .collect::<Vec<ToastData>>()
-                                },
+							match position {
+								ToastPosition::BottomLeft | ToastPosition::BottomRight => {
+									toasts.iter()
+										.filter(|toast| toast.position.eq(position)).cloned()
+										.collect::<Vec<ToastData>>()
+								},
 
-                                ToastPosition::TopLeft | ToastPosition::TopRight => {
-                                    toasts.iter()
-                                        .filter(|toast| toast.position.eq(position)).cloned()
-                                        .rev()
-                                        .collect::<Vec<ToastData>>()
-                                },
-                            }
-                        }
-                        key=|toast| toast.id
-                        let:toast
-                    >
-                        <Toast toast={toast} />
-                    </For>
-                </div>
-            </Show>
-        </For>
-    }
+								ToastPosition::TopLeft | ToastPosition::TopRight => {
+									toasts.iter()
+										.filter(|toast| toast.position.eq(position)).cloned()
+										.rev()
+										.collect::<Vec<ToastData>>()
+								},
+							}
+						}
+						key=|toast| toast.id
+						let:toast
+					>
+						<Toast toast={toast} />
+					</For>
+				</div>
+			</Show>
+		</For>
+	}
 }
 
 pub fn provide_toaster() {
-    if use_context::<ToasterContext>().is_none() {
-        provide_context(ToasterContext::default());
-    }
+	if use_context::<ToasterContext>().is_none() {
+		provide_context(ToasterContext::default());
+	}
 }
 
 #[must_use]
 pub fn expect_toaster() -> ToasterContext {
-    expect_context::<ToasterContext>()
+	expect_context::<ToasterContext>()
 }
 
 fn is_container_empty(position: &ToastPosition) -> bool {
@@ -237,28 +239,28 @@ fn is_container_empty(position: &ToastPosition) -> bool {
 }
 
 fn get_container_id(position: &ToastPosition) -> &'static str {
-    match position {
-        ToastPosition::TopLeft => "top_left",
-        ToastPosition::TopRight => "top_right",
-        ToastPosition::BottomRight => "bottom_right",
-        ToastPosition::BottomLeft => "bottom_left",
-    }
+	match position {
+		ToastPosition::TopLeft => "top_left",
+		ToastPosition::TopRight => "top_right",
+		ToastPosition::BottomRight => "bottom_right",
+		ToastPosition::BottomLeft => "bottom_left",
+	}
 }
 
 fn get_container_inset(position: &ToastPosition) -> &'static str {
-    match position {
-        ToastPosition::TopLeft => "0 auto auto 0",
-        ToastPosition::TopRight => "0 0 auto auto",
-        ToastPosition::BottomRight => "auto 0 0 auto",
-        ToastPosition::BottomLeft => "auto 0 0 0",
-    }
+	match position {
+		ToastPosition::TopLeft => "0 auto auto 0",
+		ToastPosition::TopRight => "0 0 auto auto",
+		ToastPosition::BottomRight => "auto 0 0 auto",
+		ToastPosition::BottomLeft => "auto 0 0 0",
+	}
 }
 
 fn get_container_margin(position: &ToastPosition) -> &'static str {
-    match position {
-        ToastPosition::TopLeft | ToastPosition::BottomLeft => "0 0 0 12px",
-        ToastPosition::TopRight | ToastPosition::BottomRight => "0 12px 0 0",
-    }
+	match position {
+		ToastPosition::TopLeft | ToastPosition::BottomLeft => "0 0 0 12px",
+		ToastPosition::TopRight | ToastPosition::BottomRight => "0 12px 0 0",
+	}
 }
 
 fn get_container_class(
