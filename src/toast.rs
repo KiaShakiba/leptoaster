@@ -168,6 +168,7 @@ fn get_initial_positions(position: &ToastPosition) -> (&'static str, &'static st
             ("auto", "calc((var(--leptoaster-width) + 12px * 2) * -1)")
         }
     }
+
 }
 
 fn get_cursor(dismissable: bool) -> &'static str {
