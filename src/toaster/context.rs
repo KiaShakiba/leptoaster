@@ -5,13 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-use std::{
-	borrow::BorrowMut,
-	sync::{Arc, Mutex},
-};
-
+use std::sync::{Arc, Mutex};
 use leptos::prelude::*;
-
 use crate::toast::{ToastBuilder, ToastData, ToastId, ToastLevel};
 
 /// The global context of the toaster. You should provide this as a global
