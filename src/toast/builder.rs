@@ -5,6 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+use std::fmt::Display;
+
 use leptos::prelude::RwSignal;
 
 use crate::toast::data::{ToastData, ToastId, ToastLevel, ToastPosition};
@@ -47,9 +49,12 @@ impl ToastBuilder {
 	/// let toast = ToastBuilder::new("My toast message.");
 	/// ```
 	#[must_use]
-	pub fn new(message: &str) -> Self {
+	pub fn new<T>(message: T) -> Self
+	where
+		T: Display,
+	{
 		ToastBuilder {
-			message: message.into(),
+			message: message.to_string(),
 
 			level: ToastLevel::Info,
 

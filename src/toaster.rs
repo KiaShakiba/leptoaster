@@ -39,9 +39,7 @@ const CONTAINER_POSITIONS: &[ToastPosition] = &[
 /// }
 /// ```
 #[component]
-pub fn Toaster(
-	#[prop(optional, into)] stacked: Signal<bool>,
-) -> impl IntoView {
+pub fn Toaster(#[prop(optional, into)] stacked: Signal<bool>) -> impl IntoView {
 	let toaster = expect_toaster();
 
 	view! {

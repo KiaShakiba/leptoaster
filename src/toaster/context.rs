@@ -5,8 +5,13 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-use std::sync::{Arc, Mutex};
+use std::{
+	fmt::Display,
+	sync::{Arc, Mutex},
+};
+
 use leptos::prelude::*;
+
 use crate::toast::{ToastBuilder, ToastData, ToastId, ToastLevel};
 
 /// The global context of the toaster. You should provide this as a global
@@ -70,7 +75,10 @@ impl ToasterContext {
 	///     toaster.info("My toast message.");
 	/// }
 	/// ```
-	pub fn info(&self, message: &str) {
+	pub fn info<T>(&self, message: T)
+	where
+		T: Display,
+	{
 		self.toast(ToastBuilder::new(message).with_level(ToastLevel::Info));
 	}
 
@@ -85,7 +93,10 @@ impl ToasterContext {
 	///     toaster.success("My toast message.");
 	/// }
 	/// ```
-	pub fn success(&self, message: &str) {
+	pub fn success<T>(&self, message: T)
+	where
+		T: Display,
+	{
 		self.toast(ToastBuilder::new(message).with_level(ToastLevel::Success));
 	}
 
@@ -100,7 +111,10 @@ impl ToasterContext {
 	///     toaster.warn("My toast message.");
 	/// }
 	/// ```
-	pub fn warn(&self, message: &str) {
+	pub fn warn<T>(&self, message: T)
+	where
+		T: Display,
+	{
 		self.toast(ToastBuilder::new(message).with_level(ToastLevel::Warn));
 	}
 
@@ -115,7 +129,10 @@ impl ToasterContext {
 	///     toaster.error("My toast message.");
 	/// }
 	/// ```
-	pub fn error(&self, message: &str) {
+	pub fn error<T>(&self, message: T)
+	where
+		T: Display,
+	{
 		self.toast(ToastBuilder::new(message).with_level(ToastLevel::Error));
 	}
 

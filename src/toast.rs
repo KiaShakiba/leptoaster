@@ -8,6 +8,8 @@
 mod builder;
 mod data;
 
+use std::time::Duration;
+
 use leptos::prelude::*;
 
 pub use crate::toast::data::{ToastData, ToastId, ToastLevel, ToastPosition};
@@ -35,19 +37,20 @@ pub fn Toast(toast: ToastData) -> impl IntoView {
 						toast.clear_signal.set(true);
 					}
 				},
-				std::time::Duration::from_millis(expiry as u64),
+				Duration::from_millis(expiry as u64),
 			);
 		}
 	});
 
 	Effect::new(move |_| {
+		let toaster = expect_toaster();
+
 		if toast.clear_signal.get() {
 			set_animation_name.set(slide_out_animation_name);
+
 			set_timeout(
-				move || {
-					expect_toaster().remove(toast.id);
-				},
-				std::time::Duration::from_millis(animation_duration),
+				move || toaster.remove(toast.id),
+				Duration::from_millis(animation_duration),
 			);
 		}
 	});

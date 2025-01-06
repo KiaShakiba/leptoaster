@@ -12,6 +12,7 @@ use leptos_router::{
 	components::{Route, Router, Routes},
 	StaticSegment,
 };
+
 pub fn shell(options: LeptosOptions) -> impl IntoView {
 	view! {
 		<!DOCTYPE html>
@@ -60,9 +61,11 @@ pub fn App() -> impl IntoView {
 fn HomePage() -> impl IntoView {
 	// Creates a reactive value to update the button
 	let count = RwSignal::new(0);
+	let toaster = expect_toaster();
+
 	let on_click = move |_| {
 		*count.write() += 1;
-		let toaster = expect_toaster();
+
 		toaster.toast(
 			ToastBuilder::new(&format!("Count: {}", count.get()))
 				.with_level(ToastLevel::Success)
