@@ -11,33 +11,33 @@ pub type ToastId = u64;
 
 #[derive(Clone, PartialEq, Eq, Debug)]
 pub enum ToastLevel {
-    Info,
-    Success,
-    Warn,
-    Error,
+	Info,
+	Success,
+	Warn,
+	Error,
 }
 
 #[derive(Clone, PartialEq, Eq, Debug)]
 pub enum ToastPosition {
-    TopLeft,
-    TopRight,
-    BottomRight,
-    BottomLeft,
+	TopLeft,
+	TopRight,
+	BottomRight,
+	BottomLeft,
 }
 
 #[derive(Clone, Debug)]
 pub struct ToastData {
-    pub id: ToastId,
+	pub id: ToastId,
 
-    pub message: String,
+	pub message: String,
 
-    pub level: ToastLevel,
+	pub level: ToastLevel,
 
-    pub dismissable: bool,
-    pub expiry: Option<u32>,
-    pub progress: bool,
+	pub dismissable: bool,
+	pub expiry: Option<u32>,
+	pub progress: bool,
 
-    pub position: ToastPosition,
+	pub position: ToastPosition,
 
-    pub clear_signal: RwSignal<bool>,
+	pub clear_signal: RwSignal<bool>,
 }
