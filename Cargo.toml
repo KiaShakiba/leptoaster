@@ -10,5 +10,9 @@ keywords = ["leptos", "toast", "web", "ui", "userinterface"]
 categories = ["gui", "web-programming"]
 
 [dependencies]
-gloo-timers = { version = "0.3.0", features = ["futures"] }
-leptos = { version = "0.6.5", features = ["csr", "nightly"] }
+leptos = { version = "0.7.0" }
+
+[features]
+csr = ["leptos/csr"]
+ssr = ["leptos/ssr"]
+hydrate = ["leptos/hydrate"]

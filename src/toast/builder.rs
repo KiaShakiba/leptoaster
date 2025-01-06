@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-use leptos::*;
+use leptos::prelude::RwSignal;
 
 use crate::toast::data::{ToastData, ToastId, ToastLevel, ToastPosition};
 
@@ -143,7 +143,7 @@ impl ToastBuilder {
 
 			position: self.position,
 
-			clear_signal: create_rw_signal(false),
+			clear_signal: RwSignal::new(false),
 		}
 	}
 }
