@@ -65,6 +65,7 @@ pub fn Toast(toast: ToastData) -> impl IntoView {
 
 	view! {
 		<div
+			class="toast"
 			style:width="100%"
 			style:margin="12px 0"
 			style:padding="16px"
