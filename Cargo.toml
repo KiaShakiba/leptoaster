@@ -1,6 +1,6 @@
 [package]
 name = "leptoaster"
-version = "0.2.2"
+version = "0.2.3"
 edition = "2024"
 license = "MIT"
 description = "A minimal toast library for Leptos."
@@ -10,7 +10,7 @@ keywords = ["leptos", "toast", "web", "ui", "userinterface"]
 categories = ["gui", "web-programming"]
 
 [dependencies]
-leptos = { version = "0.7" }
+leptos = { version = "0.8" }
 
 [features]
 csr = ["leptos/csr"]
